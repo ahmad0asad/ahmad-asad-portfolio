@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technical Work &amp; Lifestyle | Ahmad Asad - Remote Sensing Scientist</title>
+  <meta name="description" content="Technical blueprint of Ahmad Asad's satellite remote sensing research and algorithm development, alongside his personal fitness routine and nutrition habits for cognitive focus.">
+  <meta name="keywords" content="Ahmad Asad Technical Work, Soil Sealing Algorithm, Sentinel-2 Multitemporal, Google Earth Engine, PostGIS, openEO, Remote Sensing Research, Daily Routine, Nutrition, Fitness">
+  <meta name="author" content="Ahmad Asad">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       Sticky Navigation Bar
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand" aria-label="Ahmad Asad Homepage">
+        <div class="brand-avatar-mini">AA</div>
+        <div class="brand-info">
+          <span class="brand-name">Ahmad Asad</span>
+          <span class="brand-title">Remote Sensing &amp; Machine Learning · PhD Scholar</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Main Navigation">
+        <div class="nav-links">
+          <a href="index.html" class="nav-link">Overview</a>
+          <a href="academic.html" class="nav-link">Academic &amp; Research</a>
+          <a href="lifestyle.html" class="nav-link active" aria-current="page">Technical Work &amp; Lifestyle</a>
+        </div>
+        <div class="nav-cta">
+          <a href="assets/cv.pdf" class="btn btn-outline btn-sm" download="Ahmad_Asad_CV.pdf">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download CV
+          </a>
+        </div>
+      </nav>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======================================================================
+         Page Header & Section Switcher
+         ====================================================================== -->
+    <section class="section" style="padding-bottom: 2.5rem; background: var(--color-bg); border-bottom: 1px solid var(--color-border);">
+      <div class="container">
+        <div class="section-tag blue-tag">Systems &amp; Personal Philosophy</div>
+        <h1 style="margin-bottom: 1rem;">Technical Blueprint &amp; Personal Lifestyle</h1>
+        <p class="section-subtitle" style="max-width: 840px;">
+          This page is organized into two distinct sections: an in-depth technical explanation of the remote sensing algorithms, machine learning pipelines, and spatial systems I have engineered, followed by a separate look into my daily fitness and nutrition habits that keep my mind clear and energized for research.
+        </p>
+
+        <!-- In-Page Jump Navigation -->
+        <div class="page-jump-bar">
+          <a href="#technical-blueprint" class="jump-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            1. Technical Blueprint &amp; Research Engineering
+          </a>
+          <a href="#personal-lifestyle" class="jump-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+            2. Personal Lifestyle, Fitness &amp; Nutrition
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         PART 1: TECHNICAL BLUEPRINT (Deep Technical Breakdown of His Work)
+         ====================================================================== -->
+    <section class="section" id="technical-blueprint">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Part 1 · Engineering Blueprint</div>
+          <h2>Technical Explanation of My Research &amp; Systems</h2>
+          <p class="section-subtitle">
+            A comprehensive breakdown of the core satellite algorithms, data architectures, and computational pipelines I have designed, tested, and published.
+          </p>
+        </div>
+
+        <!-- Project 1 -->
+        <article class="tech-project-card">
+          <div class="tech-card-header">
+            <div class="tech-card-title-group">
+              <h3>Multitemporal Sentinel-2 Framework for Urban Soil Sealing Detection</h3>
+              <span class="tech-card-subtitle">Primary Doctoral Research · University of Bari Aldo Moro &amp; PNRR Fellowship</span>
+            </div>
+            <span class="tag accent-tag">Elsevier RSASE 2026 (Vol. 43, 102231)</span>
+          </div>
+
+          <p>
+            <span class="lead-in">The Scientific &amp; Practical Problem:</span> Monitoring soil sealing (impervious surface expansion) across heterogeneous peri-urban and rural landscapes has historically been hindered by severe spectral confusion. On a single-date optical satellite image, dry bare agricultural soil, harvested crop fields, and unpaved roads exhibit spectral reflectance curves almost identical to asphalt, concrete, and roofing materials. This leads to substantial overestimation and false positives.
+          </p>
+
+          <p>
+            <span class="lead-in">The Algorithmic Solution:</span> To resolve this spectral ambiguity, I designed an automated multitemporal framework that exploits temporal phenology. Rather than relying on static images, the algorithm constructs seasonal multi-band composite stacks from Sentinel-2 MSI data. Because agricultural fields undergo dramatic vegetation growth and post-harvest plowing cycles throughout the year, their spectral variance over time is high. In contrast, artificially sealed surfaces maintain stable, invariant reflectance across all seasons.
+          </p>
+
+          <div class="tech-flow-steps">
+            <div class="tech-flow-step">
+              <div class="flow-step-num">1</div>
+              <div class="flow-step-content">
+                <h4>Multispectral Band Harmonization</h4>
+                <p>Integrated Sentinel-2 10m visible and NIR bands (B2, B3, B4, B8) with 20m red-edge and SWIR bands (B5, B6, B7, B8A, B11, B12), resampling and normalizing surface reflectances.</p>
+              </div>
+            </div>
+            <div class="tech-flow-step">
+              <div class="flow-step-num">2</div>
+              <div class="flow-step-content">
+                <h4>Temporal Feature Engineering &amp; Index Formulation</h4>
+                <p>Extracted multi-seasonal statistical percentiles (10th, 50th, 90th) and temporal variance across key spectral indices, including NDVI, NDBI (Normalized Difference Built-Up Index), and MNDWI.</p>
+              </div>
+            </div>
+            <div class="tech-flow-step">
+              <div class="flow-step-num">3</div>
+              <div class="flow-step-content">
+                <h4>Machine Learning Classification Pipeline</h4>
+                <p>Trained and optimized Random Forest ensemble models using spatial cross-validation to eliminate spatial autocorrelation. Validated across contrasting Mediterranean and temperate agro-climatic zones, achieving high detection accuracy without site-specific hyperparameter tweaking.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tech-spec-grid">
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Sensors &amp; Resolution</span>
+              <span class="tech-spec-value">Sentinel-2 MSI (10m / 20m)</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Machine Learning</span>
+              <span class="tech-spec-value">Multitemporal Random Forest</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Key Libraries</span>
+              <span class="tech-spec-value">Python, Scikit-learn, Rasterio, GeoPandas</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Outcome</span>
+              <span class="tech-spec-value">Published in Elsevier RSASE</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 2 -->
+        <article class="tech-project-card">
+          <div class="tech-card-header">
+            <div class="tech-card-title-group">
+              <h3>Pure-Pixel Spectral Analysis &amp; Sub-Pixel Spectral Unmixing</h3>
+              <span class="tech-card-subtitle">Visiting Research Scholar Appointment · University of Almería, Spain</span>
+            </div>
+            <span class="tag accent-tag">Research Mobility (Jan 2026 – Jul 2026)</span>
+          </div>
+
+          <p>
+            <span class="lead-in">The Challenge of Mixed Pixels:</span> At spatial resolutions of 10m to 30m, satellite pixels are rarely spectrally homogeneous. A single pixel along an urban fringe often encapsulates a blend of asphalt, rooftop tile, grass, and tree canopy. Traditional "hard" classification algorithms force a binary label on the whole pixel, hiding early-stage land sealing and failing to quantify low-density artificial surfaces.
+          </p>
+
+          <p>
+            <span class="lead-in">Implementation &amp; Radiative Transfer Modeling:</span> During my research mobility at the University of Almería, I focused on endmember extraction and spectral unmixing workflows:
+          </p>
+
+          <div class="tech-flow-steps">
+            <div class="tech-flow-step">
+              <div class="flow-step-num">1</div>
+              <div class="flow-step-content">
+                <h4>Automated Endmember Extraction</h4>
+                <p>Identified the purest spectral signatures (endmembers) directly from satellite scenes for high-albedo impervious surfaces, low-albedo impervious surfaces, green vegetation, and bare soil.</p>
+              </div>
+            </div>
+            <div class="tech-flow-step">
+              <div class="flow-step-num">2</div>
+              <div class="flow-step-content">
+                <h4>Fully Constrained Linear Spectral Unmixing (FCLSU)</h4>
+                <p>Developed least-squares unmixing algorithms enforcing non-negativity and sum-to-one constraints, decomposing mixed pixel reflectance into fractional abundance maps (0% to 100% sealed material per pixel).</p>
+              </div>
+            </div>
+            <div class="tech-flow-step">
+              <div class="flow-step-num">3</div>
+              <div class="flow-step-content">
+                <h4>Validation Against Ground &amp; Orthophoto Truth</h4>
+                <p>Benchmarked sub-pixel estimations against ultra-high-resolution aerial imagery and field radiometric data in southeastern Spain and southern Italy, achieving reliable quantification of diffuse sealing.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tech-spec-grid">
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Methodology</span>
+              <span class="tech-spec-value">Fully Constrained Linear Unmixing</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Spectral Domain</span>
+              <span class="tech-spec-value">VIS - NIR - SWIR (0.4 – 2.2 µm)</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Key Tools</span>
+              <span class="tech-spec-value">Python, NumPy, SciPy, Spectral Python</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Target Terrains</span>
+              <span class="tech-spec-value">Mediterranean Arid &amp; Semi-Arid</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 3 -->
+        <article class="tech-project-card">
+          <div class="tech-card-header">
+            <div class="tech-card-title-group">
+              <h3>Cloud-Native Geospatial Automation with Google Earth Engine &amp; openEO</h3>
+              <span class="tech-card-subtitle">Scalable Big Data Infrastructure for Multi-Temporal Surface Monitoring</span>
+            </div>
+            <span class="tag">Cloud Architecture</span>
+          </div>
+
+          <p>
+            <span class="lead-in">Overcoming Local Storage Bottlenecks:</span> Processing multi-year, continental-scale satellite archives involves tens of terabytes of optical data. Downloading these volumes to local workstations is inefficient and limits reproducibility. I structured fully cloud-native workflows using Google Earth Engine (Python and JavaScript APIs) and openEO.
+          </p>
+
+          <p>
+            <span class="lead-in">Cloud Workflow Highlights:</span>
+          </p>
+          <ul style="list-style: disc; padding-left: 1.25rem; font-size: 0.9375rem; color: var(--color-primary-muted); line-height: 1.7; margin-bottom: 1.25rem;">
+            <li><strong>Automated Cloud &amp; Shadow Masking:</strong> Integrated the `s2cloudless` machine learning probability masks and scene classification layers (SCL) to remove cloud and shadow pixels dynamically without manual intervention.</li>
+            <li><strong>Server-Side Batch Execution:</strong> Constructed server-side reducer functions to compute annual medians, standard deviations, and seasonal indices directly on Google’s distributed cluster.</li>
+            <li><strong>openEO Standardized Pipelines:</strong> Implemented openEO process graphs to ensure algorithm workflows are vendor-neutral and portable across different Copernicus cloud data providers.</li>
+            <li><strong>Direct Spatial Export:</strong> Automated tiling and export of Cloud-Optimized GeoTIFFs (COGs) into spatial storage buckets for downstream analysis.</li>
+          </ul>
+
+          <div class="tech-spec-grid">
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Platforms</span>
+              <span class="tech-spec-value">Google Earth Engine &amp; openEO</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Languages</span>
+              <span class="tech-spec-value">Python, JavaScript</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Input Archives</span>
+              <span class="tech-spec-value">Sentinel-2 L2A &amp; Landsat 8/9</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Deliverable</span>
+              <span class="tech-spec-value">Automated Batch Ingestion Pipelines</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 4 -->
+        <article class="tech-project-card">
+          <div class="tech-card-header">
+            <div class="tech-card-title-group">
+              <h3>Mapping the Photovoltaic Landscape of Puglia Using Open Energy Data</h3>
+              <span class="tech-card-subtitle">Spatial Database Modeling &amp; Energy Transition Analytics</span>
+            </div>
+            <span class="tag accent-tag">Springer LNCS 2027 (Vol. 16762)</span>
+          </div>
+
+          <p>
+            <span class="lead-in">Territorial Context:</span> In the Puglia region of southern Italy, utility-scale photovoltaic (PV) power plants have expanded rapidly, often converting high-value agricultural soils into solar energy farms. Regional authorities and researchers needed an empirical spatial database to quantify this land transition and monitor spatial trends.
+          </p>
+
+          <p>
+            <span class="lead-in">Spatial Database Engineering:</span> I assembled and harmonized open territorial data, cadastral parcels, and official renewable energy registries (GSE) across the Puglia region:
+          </p>
+
+          <div class="tech-flow-steps">
+            <div class="tech-flow-step">
+              <div class="flow-step-num">1</div>
+              <div class="flow-step-content">
+                <h4>PostGIS Spatial Database Administration</h4>
+                <p>Designed spatial schemas in PostgreSQL with PostGIS, executing spatial indexing (GIST), geometric validity repair, and spatial joins across hundreds of thousands of cadastral parcel polygons.</p>
+              </div>
+            </div>
+            <div class="tech-flow-step">
+              <div class="flow-step-num">2</div>
+              <div class="flow-step-content">
+                <h4>Land Transition &amp; Displacement Analysis</h4>
+                <p>Intersected photovoltaic plant footprints with historical Land-Use/Land-Cover (LULC) inventories to calculate the exact hectares of olive groves, arable land, and natural vegetation transformed into energy infrastructure.</p>
+              </div>
+            </div>
+            <div class="tech-flow-step">
+              <div class="flow-step-num">3</div>
+              <div class="flow-step-content">
+                <h4>Evidence-Based Territorial Reporting</h4>
+                <p>Delivered spatial transition matrices and cartographic models to guide sustainable territorial planning policies in southern Italy.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tech-spec-grid">
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Spatial Database</span>
+              <span class="tech-spec-value">PostgreSQL / PostGIS</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Data Sources</span>
+              <span class="tech-spec-value">GSE Open Energy Data, Cadastral Maps</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Techniques</span>
+              <span class="tech-spec-value">Topological Modeling &amp; Spatial Joins</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Publication</span>
+              <span class="tech-spec-value">Springer LNCS ICCSA Workshops</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 5 -->
+        <article class="tech-project-card">
+          <div class="tech-card-header">
+            <div class="tech-card-title-group">
+              <h3>SoilEye: An Interactive Web App Prototype for Soil Sealing Monitoring</h3>
+              <span class="tech-card-subtitle">Full-Stack WebGIS Tool for Environmental Decision-Makers</span>
+            </div>
+            <span class="tag accent-tag">Springer LNCS 2026 (Vol. 15891)</span>
+          </div>
+
+          <p>
+            <span class="lead-in">Bridging Science and Public Policy:</span> Satellite research findings often remain locked within academic journals or complex desktop GIS software that municipal technicians and environmental planners cannot easily operate. I developed <strong>SoilEye</strong>, a lightweight interactive WebGIS application that makes soil sealing monitoring instantly accessible.
+          </p>
+
+          <p>
+            <span class="lead-in">System Architecture:</span> SoilEye connects a responsive client-side interface with cloud-served geospatial raster tiles. Users can pan and zoom across regional monitoring areas, drag an interactive temporal slider to compare historical baseline imagery against present-day status, draw custom polygons of interest, and instantly generate summarized zonal change statistics without touching command-line scripts.
+          </p>
+
+          <div class="tech-spec-grid">
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Application Type</span>
+              <span class="tech-spec-value">Interactive WebGIS Prototype</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Front-End Stack</span>
+              <span class="tech-spec-value">HTML5, Modern CSS, Vanilla JavaScript</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Mapping Services</span>
+              <span class="tech-spec-value">Leaflet, WMS/WMTS Tile Services</span>
+            </div>
+            <div class="tech-spec-item">
+              <span class="tech-spec-label">Publication</span>
+              <span class="tech-spec-value">Springer LNCS ICCSA Workshops</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         PART 2: PERSONAL LIFESTYLE, FITNESS & NUTRITION (Completely Separate)
+         ====================================================================== -->
+    <section class="section section-alt" id="personal-lifestyle">
+      <div class="container">
+        
+        <div class="section-header">
+          <div class="section-tag" style="color: var(--color-accent); background-color: var(--color-accent-subtle);">
+            Part 2 · Personal Discipline
+          </div>
+          <h2>Lifestyle, Fitness &amp; Nutrition for Cognitive Focus</h2>
+          <p class="section-subtitle">
+            How I manage physical conditioning, daily routine, and balanced nutrition to stay sharp and energized for demanding computational research.
+          </p>
+        </div>
+
+        <div class="lifestyle-hero-box">
+          <h2>The Connection Between Physical Fitness and Mental Clarity</h2>
+          <p>
+            Conducting satellite algorithm research, debugging complex geospatial scripts, and working through mathematical models requires hours of uninterrupted mental concentration in front of computer displays. Rather than treating fitness and nutrition as an afterthought, I view physical conditioning as the essential foundation that keeps my energy steady, clears mental fatigue, and maintains sharp cognitive thinking throughout the week.
+          </p>
+        </div>
+
+        <!-- Three Core Pillars -->
+        <div class="cards-grid-3" style="margin-bottom: 3.5rem;">
+          
+          <!-- Pillar 1: Nutrition -->
+          <div class="pillar-card">
+            <div class="pillar-icon-box green">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+            </div>
+            <h3 class="card-title">Nutrition for Cognitive Clarity</h3>
+            <p class="card-text">
+              <span class="lead-in">What I eat directly impacts how I think.</span> I consciously structure my diet around clean, nutrient-dense Mediterranean whole foods available here in Puglia, Italy.
+            </p>
+            <ul style="list-style: disc; padding-left: 1.25rem; font-size: 0.875rem; color: var(--color-primary-muted); line-height: 1.65; margin-bottom: 1rem;">
+              <li><strong>Healthy Fats:</strong> High-quality local extra virgin olive oil as the primary cooking and dressing fat.</li>
+              <li><strong>Quality Protein:</strong> Fresh Adriatic fish, pasture-raised eggs, and traditional legumes (chickpeas, fava beans, lentils).</li>
+              <li><strong>Micronutrients:</strong> Generous servings of seasonal vegetables, dark greens, and fruit for natural antioxidants.</li>
+              <li><strong>Zero Brain Fog:</strong> Avoiding ultra-processed foods, refined sugar spikes, and heavy midday meals prevents energy crashes and maintains steady afternoon concentration.</li>
+              <li><strong>Hydration:</strong> Drinking 3+ liters of water daily to prevent dehydration-induced headaches and cognitive sluggishness.</li>
+            </ul>
+            <div class="card-tags">
+              <span class="tag accent-tag">Balanced Whole Foods</span>
+              <span class="tag">Steady Glucose</span>
+              <span class="tag">Hydration</span>
+            </div>
+          </div>
+
+          <!-- Pillar 2: Cardiovascular Base -->
+          <div class="pillar-card">
+            <div class="pillar-icon-box blue">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
+            </div>
+            <h3 class="card-title">Cardiovascular Endurance</h3>
+            <p class="card-text">
+              <span class="lead-in">Aerobic conditioning builds stamina.</span> Spending hours analyzing spatial matrices can be mentally exhausting; regular cardiovascular training keeps my heart and lungs strong.
+            </p>
+            <ul style="list-style: disc; padding-left: 1.25rem; font-size: 0.875rem; color: var(--color-primary-muted); line-height: 1.65; margin-bottom: 1rem;">
+              <li><strong>Coastal Running:</strong> Regular easy-paced running along the seaside promenade of Bari to decompress and enjoy natural light.</li>
+              <li><strong>Cycling:</strong> Moderate-intensity weekend cycling exploring the roads and countryside of Puglia.</li>
+              <li><strong>Consistent Aerobic Base:</strong> Maintaining an easy conversational pace that builds cardiovascular resilience without creating excessive physical exhaustion.</li>
+              <li><strong>Mental Reset:</strong> Using aerobic sessions as dedicated screen-free time where research ideas often naturally fall into place.</li>
+            </ul>
+            <div class="card-tags">
+              <span class="tag">Running in Bari</span>
+              <span class="tag">Coastal Cycling</span>
+              <span class="tag">Aerobic Stamina</span>
+            </div>
+          </div>
+
+          <!-- Pillar 3: Strength & Posture -->
+          <div class="pillar-card">
+            <div class="pillar-icon-box amber">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                <line x1="6" y1="1" x2="6" y2="4"></line>
+                <line x1="10" y1="1" x2="10" y2="4"></line>
+                <line x1="14" y1="1" x2="14" y2="4"></line>
+              </svg>
+            </div>
+            <h3 class="card-title">Strength &amp; Posture Care</h3>
+            <p class="card-text">
+              <span class="lead-in">Counteracting the desk-bound posture.</span> Data science and geospatial programming inevitably involve extended seated periods, which can lead to back and shoulder strain.
+            </p>
+            <ul style="list-style: disc; padding-left: 1.25rem; font-size: 0.875rem; color: var(--color-primary-muted); line-height: 1.65; margin-bottom: 1rem;">
+              <li><strong>Compound Movements:</strong> 3 to 4 resistance sessions per week focusing on squats, deadlifts, pull-ups, and core stabilization.</li>
+              <li><strong>Spinal Health:</strong> Reinforcing posterior chain muscles (upper back, glutes, hamstrings) to prevent rounded shoulders and neck tension.</li>
+              <li><strong>Daily Mobility Drills:</strong> 10 to 15 minutes of hip flexor stretching, thoracic rotations, and shoulder mobility every morning.</li>
+              <li><strong>Workstation Posture:</strong> Alternating sitting and standing at the desk to keep circulation active throughout the day.</li>
+            </ul>
+            <div class="card-tags">
+              <span class="tag">Core Stability</span>
+              <span class="tag">Desk Prehab</span>
+              <span class="tag">Compound Lifts</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Realistic Daily Schedule -->
+        <div class="container-narrow" style="margin: 0 auto;">
+          <div class="section-header text-center" style="margin-bottom: 2rem;">
+            <h3>A Typical Daily Routine</h3>
+            <p class="section-subtitle" style="font-size: 0.95rem;">
+              How I balance focused research hours, lab responsibilities, physical training, and proper rest.
+            </p>
+          </div>
+
+          <div class="routine-grid">
+            
+            <div class="routine-block">
+              <div class="routine-time">06:30 – 07:30</div>
+              <div class="routine-details">
+                <h4>Morning Routine, Hydration &amp; Mobility</h4>
+                <p>Waking up early, large glass of water, light mobility stretching to wake up the spine, and a wholesome breakfast.</p>
+              </div>
+              <span class="routine-type-pill type-recovery">Morning</span>
+            </div>
+
+            <div class="routine-block">
+              <div class="routine-time">08:30 – 12:30</div>
+              <div class="routine-details">
+                <h4>Deep Work Block I: Algorithm Design &amp; Mathematics</h4>
+                <p>High-focus hours dedicated to remote sensing algorithm formulations, writing scientific code, and deriving unmixing equations.</p>
+              </div>
+              <span class="routine-type-pill type-cognitive">Research</span>
+            </div>
+
+            <div class="routine-block">
+              <div class="routine-time">12:30 – 13:45</div>
+              <div class="routine-details">
+                <h4>Balanced Mediterranean Lunch &amp; Fresh Air Break</h4>
+                <p>Nutrient-rich whole-food meal with olive oil, vegetables, and lean protein, followed by a short outdoor walk to rest the eyes.</p>
+              </div>
+              <span class="routine-type-pill type-nutrition">Nutrition</span>
+            </div>
+
+            <div class="routine-block">
+              <div class="routine-time">14:00 – 17:30</div>
+              <div class="routine-details">
+                <h4>Work Block II: Cloud Computing &amp; Department Collaboration</h4>
+                <p>Earth Engine batch tasks, PostGIS spatial queries, lab meetings, manuscript writing, and research discussions.</p>
+              </div>
+              <span class="routine-type-pill type-cognitive">Lab &amp; Code</span>
+            </div>
+
+            <div class="routine-block">
+              <div class="routine-time">18:00 – 19:15</div>
+              <div class="routine-details">
+                <h4>Physical Fitness Session (Running, Cycling or Gym)</h4>
+                <p>Cardiovascular workout along the Adriatic coast or strength training at the gym to clear the mind and build physical stamina.</p>
+              </div>
+              <span class="routine-type-pill type-physical">Training</span>
+            </div>
+
+            <div class="routine-block">
+              <div class="routine-time">20:00 – 22:30</div>
+              <div class="routine-details">
+                <h4>Dinner, Academic Reading &amp; Sleep Wind-Down</h4>
+                <p>Wholesome dinner, reading papers or general literature, disconnecting from monitors, and getting consistent restful sleep.</p>
+              </div>
+              <span class="routine-type-pill type-recovery">Rest</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       Footer
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Ahmad Asad</h3>
+          <p>
+            Remote sensing scientist and PhD scholar in Sustainable Land Management at the University of Bari Aldo Moro and Politecnico di Bari. Dedicated to robust satellite algorithms and disciplined personal habits.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <div class="footer-links">
+            <a href="index.html">Overview &amp; Home</a>
+            <a href="academic.html">Research &amp; Publications</a>
+            <a href="lifestyle.html">Technical Work &amp; Lifestyle</a>
+            <a href="assets/cv.pdf" download="Ahmad_Asad_CV.pdf">Download Curriculum Vitae</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Academic Verification</h4>
+          <div class="footer-links">
+            <a href="https://orcid.org/0000-0001-9926-5524" target="_blank" rel="noopener noreferrer">ORCID: 0000-0001-9926-5524</a>
+            <a href="mailto:ahmad0asad.aa@gmail.com">ahmad0asad.aa@gmail.com</a>
+            <a href="https://www.uniba.it/it/dottorati/" target="_blank" rel="noopener noreferrer">University of Bari Aldo Moro</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; <span class="current-year">2026</span> Ahmad Asad. Clean Semantic HTML5 &amp; Vanilla CSS.
+        </div>
+        <div>
+          <span class="footer-hosting-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="M2 17l10 5 10-5"></path>
+              <path d="M2 12l10 5 10-5"></path>
+            </svg>
+            Static Free Hosting Ready · Zero External Dependencies
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toastNotification" class="toast-notification" role="status" aria-live="polite"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>
