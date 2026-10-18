@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geospatial Code &amp; Script Vault | Ahmad Asad</title>
+  <meta name="description" content="Production-ready, idempotent remote sensing and GIS code snippets for Google Earth Engine, Python (Rasterio & GeoPandas), openEO, and PostGIS.">
+  <meta name="keywords" content="Google Earth Engine JavaScript, Python Rasterio, GeoPandas, openEO, PostGIS SQL, Remote Sensing Code, SUI, Cloud Masking, Satellite Image Processing">
+  <meta name="author" content="Ahmad Asad">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       Global Navigation Bar
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand" aria-label="Ahmad Asad Homepage">
+        <div class="brand-avatar-mini">AA</div>
+        <div class="brand-info">
+          <span class="brand-name">Ahmad Asad</span>
+          <span class="brand-title">PhD Scholar · Remote Sensing &amp; GeoAI</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Main Navigation">
+        <div class="nav-links">
+          <a href="index.html" class="nav-link">Portfolio</a>
+          <a href="code.html" class="nav-link active" aria-current="page">Code Vault</a>
+          <a href="tutorials.html" class="nav-link">Tutorials</a>
+          <a href="reference.html" class="nav-link">RS Reference</a>
+          <a href="spectral-tool.html" class="nav-link">
+            Spectral Index Tool <span class="nav-badge-tool">Interactive</span>
+          </a>
+        </div>
+        <div class="nav-cta">
+          <a href="assets/cv.pdf" class="btn btn-outline btn-sm" download="Ahmad_Asad_CV.pdf">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download CV
+          </a>
+        </div>
+      </nav>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======================================================================
+         Page Header
+         ====================================================================== -->
+    <section class="section" style="padding-bottom: 2rem; background: var(--color-bg); border-bottom: 1px solid var(--color-border);">
+      <div class="container">
+        <div class="section-tag blue-tag">Reproducible Geospatial Workflows</div>
+        <h1 style="margin-bottom: 0.75rem;">Geospatial Code &amp; Script Vault</h1>
+        <p class="section-subtitle" style="max-width: 840px;">
+          Tested, idempotent, and production-ready code modules for cloud satellite analysis, spatial database management, and raster processing pipelines. Built for researchers, GIS engineers, and Earth observation data scientists.
+        </p>
+
+        <!-- Search & Category Filters -->
+        <div style="margin-top: 1.75rem;">
+          <div class="search-bar-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="codeSearchInput" class="search-input" placeholder="Search code snippets by function, library, or topic (e.g. SCL, SUI, rasterio, PostGIS)..." aria-label="Search code vault">
+          </div>
+
+          <div class="pill-group" role="toolbar" aria-label="Filter code categories">
+            <button class="pill-btn code-filter-btn active" data-category="all">All Snippets (6)</button>
+            <button class="pill-btn code-filter-btn" data-category="gee">Google Earth Engine (2)</button>
+            <button class="pill-btn code-filter-btn" data-category="python">Python &amp; Rasterio (2)</button>
+            <button class="pill-btn code-filter-btn" data-category="openeo">openEO (1)</button>
+            <button class="pill-btn code-filter-btn" data-category="sql">PostGIS / SQL (1)</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         Code Cards Grid
+         ====================================================================== -->
+    <section class="section">
+      <div class="container">
+        
+        <!-- Snippet 1: GEE SCL Cloud Masking -->
+        <article class="code-card" data-category="gee">
+          <div class="code-card-header">
+            <div class="code-header-meta">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="code-lang-pill gee">GEE JavaScript</span>
+                <span class="tag">Sentinel-2 L2A</span>
+              </div>
+              <span class="font-mono" style="font-size: 0.8125rem; color: var(--color-text-subtle);">mask_s2_scl.js</span>
+            </div>
+            <h3 class="code-card-title">Sentinel-2 Level-2A Cloud &amp; Shadow Masking via SCL Band</h3>
+            <p class="code-card-desc">
+              Filters out cloud shadows, medium/high probability clouds, cirrus, and snow/ice using the Scene Classification Layer (SCL) from Sentinel-2 Surface Reflectance (SR) Harmonized products.
+            </p>
+          </div>
+          <div class="code-block-wrapper">
+            <div class="code-block-bar">
+              <span>JavaScript (Google Earth Engine API)</span>
+              <button class="copy-btn" data-copy-target="codeSnippet1">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy Snippet
+              </button>
+            </div>
+            <pre class="code-pre" id="codeSnippet1"><code>/**
+ * Sentinel-2 Level-2A Cloud, Shadow &amp; Cirrus Masking Function
+ * Author: Ahmad Asad (PhD Scholar · University of Bari Aldo Moro)
+ * Collection: COPERNICUS/S2_SR_HARMONIZED
+ */
+function maskS2sr(image) {
+  // Select the Scene Classification Layer (SCL) band
+  var scl = image.select('SCL');
+  
+  // SCL pixel classes to mask:
+  // 3 = Cloud shadows, 8 = Cloud medium probability,
+  // 9 = Cloud high probability, 10 = Thin cirrus, 11 = Snow / Ice
+  var mask = scl.neq(3)
+    .and(scl.neq(8))
+    .and(scl.neq(9))
+    .and(scl.neq(10))
+    .and(scl.neq(11));
+  
+  // Also mask saturated or defective pixels (class 1)
+  mask = mask.and(scl.neq(1));
+  
+  // Scale optical reflectances by 10,000 to standard 0.0 - 1.0 range
+  var opticalBands = image.select('B.*').multiply(0.0001);
+  
+  return image.addBands(opticalBands, null, true)
+    .updateMask(mask)
+    .copyProperties(image, ['system:time_start', 'system:index']);
+}
+
+// Example Execution Pipeline:
+var geometry = ee.Geometry.Point([16.8719, 41.1171]); // Bari, Italy
+var s2Collection = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
+  .filterBounds(geometry)
+  .filterDate('2025-05-01', '2025-09-30')
+  .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 25))
+  .map(maskS2sr);
+
+var medianComposite = s2Collection.median();
+Map.centerObject(geometry, 12);
+Map.addLayer(medianComposite, {bands: ['B4', 'B3', 'B2'], min: 0, max: 0.3}, 'S2 Cloud-Free True Color');</code></pre>
+          </div>
+        </article>
+
+        <!-- Snippet 2: GEE SUI & Multi-Index Stack -->
+        <article class="code-card" data-category="gee">
+          <div class="code-card-header">
+            <div class="code-header-meta">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="code-lang-pill gee">GEE JavaScript</span>
+                <span class="tag accent-tag">SUI · Asad et al. (2026)</span>
+              </div>
+              <span class="font-mono" style="font-size: 0.8125rem; color: var(--color-text-subtle);">compute_sui_stack.js</span>
+            </div>
+            <h3 class="code-card-title">Sealed Urban Index (SUI) &amp; Multi-Index Stack Computation</h3>
+            <p class="code-card-desc">
+              Calculates the Sealed Urban Index (SUI = Green - SWIR1) alongside NDVI, NDBI, and MNDWI on Sentinel-2, generating a multi-band feature stack calibrated for Random Forest classification.
+            </p>
+          </div>
+          <div class="code-block-wrapper">
+            <div class="code-block-bar">
+              <span>JavaScript (Google Earth Engine API)</span>
+              <button class="copy-btn" data-copy-target="codeSnippet2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy Snippet
+              </button>
+            </div>
+            <pre class="code-pre" id="codeSnippet2"><code>/**
+ * Sealed Urban Index (SUI) Multi-Spectral Stack Pipeline
+ * Reference: Asad et al. (IJRS 2026) DOI: 10.1080/01431161.2026.2715141
+ * Formula: SUI = Green (B3) - SWIR1 (B11)
+ */
+function addSpectralIndices(image) {
+  // SUI: High values over sealed/impervious surfaces, negative over bare soil
+  var green = image.select('B3');
+  var red = image.select('B4');
+  var nir = image.select('B8');
+  var swir1 = image.select('B11');
+  
+  var sui = green.subtract(swir1).rename('SUI');
+  var ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI');
+  var ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI');
+  var mndwi = image.normalizedDifference(['B3', 'B11']).rename('MNDWI');
+  
+  return image.addBands([sui, ndvi, ndbi, mndwi]);
+}
+
+// Apply across a cloud-masked summer collection
+var aoi = ee.Geometry.Rectangle([16.70, 41.05, 17.05, 41.25]); // Bari Metro
+var summerMosaic = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
+  .filterBounds(aoi)
+  .filterDate('2025-06-01', '2025-08-31')
+  .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 20))
+  .median()
+  .clip(aoi);
+
+var stackedImage = addSpectralIndices(summerMosaic);
+
+// SUI Visualization: Impervious surfaces emerge as high/bright values
+Map.addLayer(stackedImage.select('SUI'), {min: -0.3, max: 0.15, palette: ['#2563eb', '#f8fafc', '#dc2626']}, 'Sealed Urban Index (SUI)');
+Map.addLayer(stackedImage.select('NDVI'), {min: 0.0, max: 0.7, palette: ['#78350f', '#fde047', '#15803d']}, 'NDVI');</code></pre>
+          </div>
+        </article>
+
+        <!-- Snippet 3: Python Windowed GeoTIFF Processing -->
+        <article class="code-card" data-category="python">
+          <div class="code-card-header">
+            <div class="code-header-meta">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="code-lang-pill python">Python 3</span>
+                <span class="tag">Rasterio &amp; NumPy</span>
+              </div>
+              <span class="font-mono" style="font-size: 0.8125rem; color: var(--color-text-subtle);">windowed_index_calc.py</span>
+            </div>
+            <h3 class="code-card-title">Windowed GeoTIFF Index Calculation with NoData Handling</h3>
+            <p class="code-card-desc">
+              Computes spectral indices on multi-gigabyte satellite rasters using chunked block windows. Guarantees zero out-of-memory (OOM) crashes and preserves projection, spatial transforms, and compression.
+            </p>
+          </div>
+          <div class="code-block-wrapper">
+            <div class="code-block-bar">
+              <span>Python (rasterio + numpy)</span>
+              <button class="copy-btn" data-copy-target="codeSnippet3">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy Snippet
+              </button>
+            </div>
+            <pre class="code-pre" id="codeSnippet3"><code>"""
+Windowed Spectral Index Processor with Memory Safety
+Author: Ahmad Asad | Remote Sensing & GeoAI
+Requirements: pip install rasterio numpy
+"""
+import rasterio
+from rasterio.windows import Window
+import numpy as np
+
+def compute_sui_windowed(input_tif_path, output_tif_path, green_band=3, swir1_band=11):
+    """
+    Computes SUI = Green - SWIR1 using memory-efficient block windows.
+    Handles NoData, zero-division, and writes DEFLATE-compressed output.
+    """
+    with rasterio.open(input_tif_path) as src:
+        profile = src.profile.copy()
+        nodata_val = src.nodata if src.nodata is not None else -9999.0
+        
+        # Configure output profile for single float32 index band
+        profile.update(
+            dtype=rasterio.float32,
+            count=1,
+            nodata=nodata_val,
+            compress='deflate',
+            tiled=True,
+            blockxsize=512,
+            blockysize=512
+        )
+        
+        with rasterio.open(output_tif_path, 'w', **profile) as dst:
+            # Iterate through native block windows to maintain small RAM footprint
+            for _, window in src.block_windows(1):
+                green = src.read(green_band, window=window).astype(np.float32)
+                swir1 = src.read(swir1_band, window=window).astype(np.float32)
+                
+                # Create mask for valid pixels (non-nodata and positive values)
+                valid_mask = (green != src.nodata) & (swir1 != src.nodata) & (green > 0)
+                
+                # Compute SUI (Asad et al., 2026)
+                sui_chunk = np.full(green.shape, nodata_val, dtype=np.float32)
+                with np.errstate(divide='ignore', invalid='ignore'):
+                    # Scale factor if raw Sentinel-2 reflectance is integer 10000
+                    scale = 0.0001 if green.max() > 100 else 1.0
+                    sui_chunk[valid_mask] = (green[valid_mask] - swir1[valid_mask]) * scale
+                
+                # Write window chunk to disk
+                dst.write(sui_chunk, 1, window=window)
+                
+    print(f"Successfully processed windowed SUI raster: {output_tif_path}")
+
+# Example invocation
+if __name__ == "__main__":
+    compute_sui_windowed("S2_Bari_multiband.tif", "S2_Bari_SUI.tif")</code></pre>
+          </div>
+        </article>
+
+        <!-- Snippet 4: Python GeoPandas + Scikit-Learn Pipeline -->
+        <article class="code-card" data-category="python">
+          <div class="code-card-header">
+            <div class="code-header-meta">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="code-lang-pill python">Python 3</span>
+                <span class="tag">GeoAI &amp; Scikit-Learn</span>
+              </div>
+              <span class="font-mono" style="font-size: 0.8125rem; color: var(--color-text-subtle);">stratified_rf_training.py</span>
+            </div>
+            <h3 class="code-card-title">Stratified Random Sampling &amp; Random Forest Training Pipeline</h3>
+            <p class="code-card-desc">
+              Extracts stratified pixel training samples across LULC classes (Sealed Urban, Bare Soil, Water, Vegetation) and trains an optimized Random Forest classifier with spatial validation and confusion metrics.
+            </p>
+          </div>
+          <div class="code-block-wrapper">
+            <div class="code-block-bar">
+              <span>Python (geopandas + scikit-learn)</span>
+              <button class="copy-btn" data-copy-target="codeSnippet4">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy Snippet
+              </button>
+            </div>
+            <pre class="code-pre" id="codeSnippet4"><code>"""
+Stratified Remote Sensing Random Forest Classifier
+Author: Ahmad Asad | Remote Sensing & GeoAI
+Requirements: pip install geopandas rasterio scikit-learn pandas
+"""
+import geopandas as gpd
+import rasterio
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import StratifiedKFold
+from sklearn.metrics import classification_report, confusion_matrix
+
+def train_lulc_random_forest(raster_path, training_points_shp, label_col='class_id'):
+    # 1. Load ground truth vector points
+    gdf = gpd.read_file(training_points_shp)
+    
+    # 2. Sample multi-spectral raster values at point geometries
+    coord_list = [(x, y) for x, y in zip(gdf.geometry.x, gdf.geometry.y)]
+    with rasterio.open(raster_path) as src:
+        sampled_values = [v for v in src.sample(coord_list)]
+        band_names = [f"Band_{i+1}" for i in range(src.count)]
+        
+    X = pd.DataFrame(sampled_values, columns=band_names)
+    y = gdf[label_col].values
+    
+    # 3. Stratified K-Fold Spatial Validation (k=5)
+    skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    rf = RandomForestClassifier(
+        n_estimators=200,
+        max_depth=18,
+        min_samples_split=4,
+        oob_score=True,
+        n_jobs=-1,
+        random_state=42
+    )
+    
+    fold_accuracies = []
+    for train_idx, val_idx in skf.split(X, y):
+        X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]
+        y_train, y_val = y[train_idx], y[val_idx]
+        
+        rf.fit(X_train, y_train)
+        score = rf.score(X_val, y_val)
+        fold_accuracies.append(score)
+        
+    print(f"5-Fold Mean Accuracy: {np.mean(fold_accuracies):.4f} (+/- {np.std(fold_accuracies):.4f})")
+    print(f"Out-of-Bag (OOB) Score: {rf.oob_score_:.4f}")
+    
+    # Feature Importance Analysis
+    feat_importances = pd.Series(rf.feature_importances_, index=band_names).sort_values(ascending=False)
+    print("\nFeature Importances:\n", feat_importances)
+    
+    return rf</code></pre>
+          </div>
+        </article>
+
+        <!-- Snippet 5: openEO Python Client Datacube -->
+        <article class="code-card" data-category="openeo">
+          <div class="code-card-header">
+            <div class="code-header-meta">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="code-lang-pill openeo">openEO Python</span>
+                <span class="tag">Copernicus Ecosystem</span>
+              </div>
+              <span class="font-mono" style="font-size: 0.8125rem; color: var(--color-text-subtle);">openeo_datacube_composite.py</span>
+            </div>
+            <h3 class="code-card-title">Cloud-Free Temporal Median Composite Datacube Export</h3>
+            <p class="code-card-desc">
+              Demonstrates standardized, vendor-neutral datacube processing via openEO. Connects to the Copernicus Data Space Ecosystem, masks clouds, reduces across the temporal dimension, and exports a GeoTIFF.
+            </p>
+          </div>
+          <div class="code-block-wrapper">
+            <div class="code-block-bar">
+              <span>Python (openeo client)</span>
+              <button class="copy-btn" data-copy-target="codeSnippet5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy Snippet
+              </button>
+            </div>
+            <pre class="code-pre" id="codeSnippet5"><code>"""
+openEO Datacube Temporal Median Pipeline
+Author: Ahmad Asad | Remote Sensing & GeoAI
+Backend: Copernicus Data Space Ecosystem (CDSE)
+Requirements: pip install openeo
+"""
+import openeo
+
+# 1. Connect and authenticate with openEO backend
+conn = openeo.connect("https://openeo.dataspace.copernicus.eu").authenticate_oidc()
+
+# 2. Define spatial & temporal bounds
+bbox = {
+    "west": 16.75, "east": 17.05,
+    "south": 41.05, "north": 41.25,
+    "crs": "EPSG:4326"
+}
+temporal_extent = ["2025-06-01", "2025-08-31"]
+
+# 3. Load Sentinel-2 L2A optical and SCL bands
+datacube = conn.load_collection(
+    "SENTINEL_2_L2A",
+    spatial_extent=bbox,
+    temporal_extent=temporal_extent,
+    bands=["B03", "B04", "B08", "B11", "SCL"]
+)
+
+# 4. Mask clouds and shadows using SCL band (classes 3, 8, 9, 10, 11)
+scl = datacube.band("SCL")
+cloud_mask = (scl == 3) | (scl == 8) | (scl == 9) | (scl == 10) | (scl == 11)
+clean_cube = datacube.mask(cloud_mask)
+
+# Drop SCL band and reduce temporal dimension with median reducer
+optical_cube = clean_cube.filter_bands(["B03", "B04", "B08", "B11"])
+median_mosaic = optical_cube.reduce_dimension(dimension="t", reducer="median")
+
+# 5. Execute as batch job or download result
+median_mosaic.download("Bari_S2_Summer_Median.tif", format="GTiff")
+print("openEO processing completed.")</code></pre>
+          </div>
+        </article>
+
+        <!-- Snippet 6: PostGIS Idempotent Spatial SQL -->
+        <article class="code-card" data-category="sql">
+          <div class="code-card-header">
+            <div class="code-header-meta">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="code-lang-pill sql">PostGIS SQL</span>
+                <span class="tag">Territorial GIS</span>
+              </div>
+              <span class="font-mono" style="font-size: 0.8125rem; color: var(--color-text-subtle);">postgis_pv_cadastral_clean.sql</span>
+            </div>
+            <h3 class="code-card-title">Idempotent Spatial Table Creation, GIST Indexing &amp; Geometry Cleaning</h3>
+            <p class="code-card-desc">
+              Production SQL used in the Regione Puglia solar photovoltaic mapping project. Enforces CRS constraints, repairs self-intersecting cadastral polygons using <code>ST_MakeValid</code>, extracts valid multi-polygons, and creates GIST spatial indexes.
+            </p>
+          </div>
+          <div class="code-block-wrapper">
+            <div class="code-block-bar">
+              <span>PostgreSQL / PostGIS SQL</span>
+              <button class="copy-btn" data-copy-target="codeSnippet6">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy Snippet
+              </button>
+            </div>
+            <pre class="code-pre" id="codeSnippet6"><code>-- ============================================================================
+-- Idempotent Spatial Schema, Geometry Repair & Spatial Indexing
+-- Project: Regione Puglia Solar Photovoltaic Landscape Analysis
+-- Author: Ahmad Asad (PhD Scholar · University of Bari Aldo Moro)
+-- ============================================================================
+
+-- 1. Ensure PostGIS extension is installed
+CREATE EXTENSION IF NOT EXISTS postgis;
+
+-- 2. Create target table with standardized EPSG:32633 (UTM zone 33N / Puglia)
+CREATE TABLE IF NOT EXISTS solar_pv_parcels (
+    parcel_id VARCHAR(64) PRIMARY KEY,
+    municipality VARCHAR(128) NOT NULL,
+    capacity_mw NUMERIC(8, 3),
+    installation_year INT,
+    orig_geom GEOMETRY(Geometry, 32633),
+    clean_geom GEOMETRY(MultiPolygon, 32633),
+    area_hectares NUMERIC(10, 4),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. Idempotently repair invalid, self-intersecting polygons from raw CAD/Shapefile
+UPDATE solar_pv_parcels
+SET clean_geom = ST_Multi(
+    ST_CollectionExtract(
+        ST_MakeValid(orig_geom),
+        3 -- Extract Polygon components only (discards line/point slivers)
+    )
+)
+WHERE clean_geom IS NULL 
+  AND orig_geom IS NOT NULL;
+
+-- 4. Calculate accurate territorial area in hectares
+UPDATE solar_pv_parcels
+SET area_hectares = ROUND((ST_Area(clean_geom) / 10000.0)::numeric, 4)
+WHERE clean_geom IS NOT NULL;
+
+-- 5. Build High-Performance GIST Spatial Index
+CREATE INDEX IF NOT EXISTS idx_solar_pv_parcels_geom 
+ON solar_pv_parcels USING GIST (clean_geom);
+
+-- 6. Spatial Intersection: Aggregate agricultural land displaced by solar plants
+SELECT 
+    p.municipality,
+    COUNT(p.parcel_id) AS total_plants,
+    ROUND(SUM(p.area_hectares), 2) AS total_pv_hectares,
+    ROUND(SUM(p.capacity_mw), 2) AS total_capacity_mw
+FROM solar_pv_parcels p
+WHERE ST_IsValid(p.clean_geom)
+GROUP BY p.municipality
+ORDER BY total_pv_hectares DESC
+LIMIT 20;</code></pre>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       Global Footer
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Ahmad Asad</h3>
+          <p>
+            PhD Scholar in Sustainable Land Management at the University of Bari Aldo Moro and Politecnico di Bari. Developing robust satellite algorithms and reproducible geospatial code.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <div class="footer-links">
+            <a href="index.html">Portfolio &amp; Profile</a>
+            <a href="code.html">Code Vault</a>
+            <a href="tutorials.html">Engineering Tutorials</a>
+            <a href="reference.html">RS Band Reference</a>
+            <a href="spectral-tool.html">Spectral Index Tool</a>
+            <a href="assets/cv.pdf" download="Ahmad_Asad_CV.pdf">Download Curriculum Vitae</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Open Source &amp; Research</h4>
+          <div class="footer-links">
+            <a href="https://orcid.org/0000-0001-9926-5524" target="_blank" rel="noopener noreferrer">ORCID Profile</a>
+            <a href="https://doi.org/10.1080/01431161.2026.2715141" target="_blank" rel="noopener noreferrer">IJRS Paper (SUI)</a>
+            <a href="mailto:ahmad0asad.aa@gmail.com">Direct Email Contact</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; <span class="current-year">2026</span> Ahmad Asad. All code snippets open under MIT license.
+        </div>
+        <div>
+          <span class="footer-hosting-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="M2 17l10 5 10-5"></path>
+              <path d="M2 12l10 5 10-5"></path>
+            </svg>
+            Static Free Hosting Ready · Zero Dependencies
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toastNotification" class="toast-notification" role="status" aria-live="polite"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>

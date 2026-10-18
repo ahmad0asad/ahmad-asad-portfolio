@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engineering &amp; GIS Problem-Solving Guides | Ahmad Asad</title>
+  <meta name="description" content="Deep-dive technical tutorials on solving Google Earth Engine memory limits, cross-sensor Sentinel-2/Landsat harmonization, and pure pixel ground-truth validation in QGIS.">
+  <meta name="keywords" content="Google Earth Engine memory limit, GEE tileScale, Cross-sensor harmonization Sentinel-2 Landsat, Roy et al 2016 HLS, QGIS pure pixel sampling, soil sealing accuracy assessment">
+  <meta name="author" content="Ahmad Asad">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       Global Navigation Bar
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand" aria-label="Ahmad Asad Homepage">
+        <div class="brand-avatar-mini">AA</div>
+        <div class="brand-info">
+          <span class="brand-name">Ahmad Asad</span>
+          <span class="brand-title">PhD Scholar · Remote Sensing &amp; GeoAI</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Main Navigation">
+        <div class="nav-links">
+          <a href="index.html" class="nav-link">Portfolio</a>
+          <a href="code.html" class="nav-link">Code Vault</a>
+          <a href="tutorials.html" class="nav-link active" aria-current="page">Tutorials</a>
+          <a href="reference.html" class="nav-link">RS Reference</a>
+          <a href="spectral-tool.html" class="nav-link">
+            Spectral Index Tool <span class="nav-badge-tool">Interactive</span>
+          </a>
+        </div>
+        <div class="nav-cta">
+          <a href="assets/cv.pdf" class="btn btn-outline btn-sm" download="Ahmad_Asad_CV.pdf">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download CV
+          </a>
+        </div>
+      </nav>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======================================================================
+         Page Header
+         ====================================================================== -->
+    <section class="section" style="padding-bottom: 2rem; background: var(--color-bg); border-bottom: 1px solid var(--color-border);">
+      <div class="container">
+        <div class="section-tag">Empirical Remote Sensing Methodology</div>
+        <h1 style="margin-bottom: 0.75rem;">Engineering &amp; GIS Problem-Solving Guides</h1>
+        <p class="section-subtitle" style="max-width: 860px;">
+          Rigorous technical walkthroughs addressing real-world computational bottlenecks, cross-platform radiometric discrepancies, and quantitative sampling strategies in Earth observation research.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         Tutorial Content & Sticky TOC Layout
+         ====================================================================== -->
+    <section class="section">
+      <div class="container">
+        <div class="tutorial-layout">
+          
+          <!-- Sticky Table of Contents Sidebar -->
+          <aside class="tutorial-toc" aria-label="Table of Contents">
+            <div class="toc-title">Tutorial Contents</div>
+            <nav class="toc-list">
+              <a href="#gee-memory-timeout" class="toc-link active">1. GEE Memory Limits &amp; Batch Timeouts</a>
+              <a href="#cross-sensor-harmonization" class="toc-link">2. Sentinel-2 &amp; Landsat Harmonization</a>
+              <a href="#qgis-pure-pixel" class="toc-link">3. Pure Pixel Sampling in QGIS</a>
+            </nav>
+            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border); font-size: 0.8125rem; color: var(--color-text-subtle);">
+              <span>Questions or edge cases?</span><br>
+              <a href="mailto:ahmad0asad.aa@gmail.com" style="color: var(--color-accent); font-weight: 600;">Reach out via email</a>
+            </div>
+          </aside>
+
+          <!-- Main Tutorial Articles Column -->
+          <div class="tutorial-articles">
+
+            <!-- ================================================================
+                 TUTORIAL 1: GEE Memory & Timeout Optimization
+                 ================================================================ -->
+            <article class="tutorial-card" id="gee-memory-timeout">
+              <div class="tutorial-header">
+                <div class="tutorial-meta-tags">
+                  <span class="code-lang-pill gee">Google Earth Engine</span>
+                  <span class="tag">Distributed Cloud Computing</span>
+                  <span class="tag">Performance Tuning</span>
+                </div>
+                <h2>Fixing "Computation Timed Out" and "User Memory Limit Exceeded" in Google Earth Engine Batch Exports</h2>
+                <p style="color: var(--color-text-subtle); font-size: 0.875rem; margin-top: 0.25rem;">
+                  Published: 2026 · Estimated reading &amp; implementation time: 10 mins
+                </p>
+              </div>
+
+              <div class="tutorial-body">
+                <h3>The Computational Bottleneck</h3>
+                <p>
+                  Every Earth observation researcher running large-scale spatial analytics on Google Earth Engine (GEE) inevitably encounters one of two catastrophic runtime failures:
+                </p>
+                <ul>
+                  <li><strong style="color: #dc2626;">User memory limit exceeded:</strong> Occurs when a single computational node exceeds its dedicated Java Virtual Machine (JVM) heap allocation (typically ~80 MB per compute tile).</li>
+                  <li><strong style="color: #dc2626;">Computation timed out:</strong> Triggered when an interactive request exceeds the 5-minute client-to-server deadline, or a batch export spends too long resolving deep, un-cached directed acyclic graphs (DAGs).</li>
+                </ul>
+
+                <p>
+                  These errors do not mean GEE lacks the infrastructure to process your study area. Rather, they signify that your computation graph forced the query optimizer into a single-worker bottleneck or un-partitioned spatial aggregation.
+                </p>
+
+                <div class="callout callout-warning">
+                  <div class="callout-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                      <line x1="12" y1="9" x2="12" y2="13"></line>
+                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                  </div>
+                  <div class="callout-text">
+                    <strong>The Client vs. Server Trap:</strong> Never execute <code class="font-mono">.getInfo()</code>, <code class="font-mono">.evaluate()</code>, or JavaScript <code class="font-mono">for</code>-loops across <code class="font-mono">ee.ImageCollection</code> or <code class="font-mono">ee.FeatureCollection</code>. Calling <code class="font-mono">.getInfo()</code> forces the client browser to stall while pulling serialized JSON over HTTP, destroying GEE's lazy evaluation and parallel worker scheduling.
+                  </div>
+                </div>
+
+                <h3>Architectural Principles to Prevent Worker OOM</h3>
+
+                <h4>1. Subdivide Processing with <code class="font-mono">tileScale</code></h4>
+                <p>
+                  When running spatial reducers (<code class="font-mono">reduceRegion</code>, <code class="font-mono">reduceNeighborhood</code>, or <code class="font-mono">reproject</code>), GEE tiles the computation into spatial quadrants. If a reducer requires aggregating high-resolution pixels over wide regions (e.g., computing regional median soil sealing across an entire metropolitan region), the worker runs out of memory holding intermediate tile accumulators.
+                </p>
+                <p>
+                  Setting <code class="font-mono">tileScale: 4</code> or <code class="font-mono">tileScale: 16</code> instructs GEE to subdivide each default tile into 4x or 16x smaller spatial chunks. While this incurs minor scheduling overhead, it slashes worker memory consumption proportionally and guarantees task completion without OOM crashes.
+                </p>
+
+                <h4>2. Prefer Unweighted Reducers and Explicit Sampling Limits</h4>
+                <p>
+                  By default, GEE spatial reducers calculate pixel area overlap weighting (fractional pixel coverage at polygon edges). Computing polygon intersections with floating-point geometry calculations for millions of pixels balloons memory. Adding <code class="font-mono">unweighted: true</code> or switching to discrete point samples drastically lightens worker load.
+                </p>
+
+                <h4>3. Break Deep Expression DAGs via Intermediate Asset Ingestion</h4>
+                <p>
+                  If your workflow chains cloud masking, multi-sensor calibration, 10 spectral index derivations, and a temporal random forest classifier, the execution graph contains hundreds of nested dependent nodes. Export the intermediate multi-temporal cloud-free composite as an <strong>Earth Engine Asset</strong> (<code class="font-mono">Export.image.toAsset</code>). Once ingested, downstream classification reads static, indexed COG blocks rather than evaluating the entire historical pipeline on-the-fly.
+                </p>
+
+                <h4>4. Spatial Tiling with Grid Envelopes</h4>
+                <p>
+                  For continental or national exports, do not attempt to stream 100 GB in one monolithic <code class="font-mono">Export.image.toDrive</code> task. Subdivide your Region of Interest (ROI) into a regular fishnet grid and map asynchronous export jobs across individual tiles.
+                </p>
+
+                <div class="callout callout-tip">
+                  <div class="callout-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                  </div>
+                  <div class="callout-text">
+                    <strong>Rule of Thumb:</strong> When exporting large rasters, specify <code class="font-mono">maxPixels: 1e13</code> alongside <code class="font-mono">shardSize: 256</code> and <code class="font-mono">fileDimensions: 4096</code>. This produces optimized Cloud Optimized GeoTIFF (COG) tiles that download quickly and load efficiently into QGIS.
+                  </div>
+                </div>
+
+                <h3>Battle-Tested Production Solution</h3>
+                <p>
+                  Below is an idempotent pattern implementing high-performance region reductions and resilient export partitioning:
+                </p>
+
+                <div class="code-block-wrapper" style="border-radius: var(--radius-md); overflow: hidden; margin: 1.5rem 0;">
+                  <div class="code-block-bar">
+                    <span>gee_memory_optimized_pipeline.js</span>
+                    <button class="copy-btn" data-copy-target="geeMemoryCode">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy Script
+                    </button>
+                  </div>
+                  <pre class="code-pre" id="geeMemoryCode"><code>/**
+ * High-Performance Region Statistics & Resilient Export Pipeline
+ * Author: Ahmad Asad (PhD Scholar · Remote Sensing & GeoAI)
+ * Fixes: User Memory Limit Exceeded & Computation Timed Out
+ */
+
+// 1. Define study region and target collection
+var aoi = ee.Geometry.Polygon([[
+  [16.70, 41.05], [16.70, 41.20],
+  [17.00, 41.20], [17.00, 41.05]
+]]);
+
+// Cloud-masked Sentinel-2 Surface Reflectance collection
+var s2 = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
+  .filterBounds(aoi)
+  .filterDate('2025-06-01', '2025-08-31')
+  .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 20))
+  .map(function(img) {
+    var scl = img.select('SCL');
+    // Keep vegetation (4), bare soil (5), water (6), unclassified (7)
+    var mask = scl.eq(4).or(scl.eq(5)).or(scl.eq(6)).or(scl.eq(7));
+    return img.updateMask(mask).divide(10000);
+  });
+
+// 2. Compute median composite with explicit projection retention
+var composite = s2.median().clip(aoi);
+
+// Derive Sealed Urban Index (SUI = Green - SWIR1) [Asad et al., IJRS 2026]
+var sui = composite.select('B3').subtract(composite.select('B11')).rename('SUI');
+
+// 3. MEMORY-OPTIMIZED REDUCTION USING tileScale & unweighted
+// This prevents worker OOM on high-res 10m pixel calculations
+var stats = sui.reduceRegion({
+  reducer: ee.Reducer.mean().combine({
+    reducer2: ee.Reducer.stdDev(),
+    sharedInputs: true
+  }).unweighted(), // Avoids expensive float geometry clipping
+  geometry: aoi,
+  scale: 10,
+  maxPixels: 1e10,
+  tileScale: 16 // CRITICAL: Splits computation into 16 sub-tiles per node
+});
+
+print('Zonal SUI Metrics:', stats);
+
+// 4. RESILIENT BATCH EXPORT CONFIGURATION
+Export.image.toDrive({
+  image: sui.toFloat(),
+  description: 'SUI_Bari_Optimized_Export_2025',
+  folder: 'GEE_Exports',
+  fileNamePrefix: 'SUI_Bari_2025_10m',
+  region: aoi,
+  scale: 10,
+  crs: 'EPSG:32633', // WGS 84 / UTM Zone 33N
+  maxPixels: 1e13,
+  shardSize: 256,
+  fileDimensions: 4096 // Splits massive rasters into manageable 4k blocks
+});</code></pre>
+                </div>
+              </div>
+            </article>
+
+            <!-- ================================================================
+                 TUTORIAL 2: Cross-Sensor Harmonization
+                 ================================================================ -->
+            <article class="tutorial-card" id="cross-sensor-harmonization">
+              <div class="tutorial-header">
+                <div class="tutorial-meta-tags">
+                  <span class="code-lang-pill python">Python / GEE</span>
+                  <span class="tag">Sentinel-2 MSI</span>
+                  <span class="tag">Landsat 8/9 OLI</span>
+                  <span class="tag">HLS (Roy et al., 2016)</span>
+                </div>
+                <h2>Cross-Sensor Harmonization Workflow Between Sentinel-2 MSI (10m/20m) and Landsat 8/9 OLI (30m)</h2>
+                <p style="color: var(--color-text-subtle); font-size: 0.875rem; margin-top: 0.25rem;">
+                  Published: 2026 · Estimated reading &amp; implementation time: 14 mins
+                </p>
+              </div>
+
+              <div class="tutorial-body">
+                <h3>The Radiometric &amp; Spatial Discrepancy</h3>
+                <p>
+                  Combining optical imagery from the European Space Agency's Copernicus Sentinel-2 constellation (MSI-A and MSI-B) with NASA/USGS Landsat 8 and 9 (OLI/OLI-2) reduces revisitation intervals to an unprecedented 2–3 days globally. However, directly comparing raw surface reflectance values across these sensors without systematic harmonization introduces substantial pseudo-phenological error:
+                </p>
+
+                <ol>
+                  <li>
+                    <strong>Spectral Response Function (SRF) Mismatch:</strong> The Relative Spectral Responses (RSR) of equivalent optical channels differ significantly. For example, Sentinel-2's broad NIR band (Band 8, 785–900 nm) covers a broader spectral window than Landsat 8's NIR band (Band 5, 851–879 nm), leading to systematic offsets in vegetation and soil index calculations.
+                  </li>
+                  <li>
+                    <strong>Spatial Resolution Disparity:</strong> Sentinel-2 operates at 10m (VNIR) and 20m (Red Edge / SWIR), whereas Landsat OLI samples at 30m. Calculating indices across native resolutions without rigorous interpolation creates mixed-pixel artifacts along parcel edges and road corridors.
+                  </li>
+                  <li>
+                    <strong>Bidirectional Reflectance Distribution Function (BRDF) Effects:</strong> Sentinel-2 has a 20.6° field-of-view (FOV) tilted across orbit tracks, while Landsat OLI has a narrower 15° FOV, causing slight angular differences in surface scattering.
+                  </li>
+                </ol>
+
+                <h3>The Harmonized Landsat-Sentinel (HLS) Transformation Matrix</h3>
+                <p>
+                  To convert Landsat 8/9 OLI surface reflectance into equivalent Sentinel-2 MSI values, we apply the peer-reviewed ordinary least squares (OLS) regression coefficients established by <strong>Roy et al. (2016)</strong> for the NASA Harmonized Landsat-Sentinel (HLS) project:
+                </p>
+
+                <div class="formula-display-box" style="margin: 1.5rem 0;">
+                  <div style="font-size: 0.8125rem; font-weight: 700; color: var(--color-text-subtle); margin-bottom: 0.5rem; text-transform: uppercase;">
+                    Empirical Transformation Formula
+                  </div>
+                  <div class="formula-math" style="font-size: 1.15rem;">
+                    \(\rho_{\text{MSI\_pred}} = \text{Slope} \times \rho_{\text{OLI}} + \text{Intercept}\)
+                  </div>
+                </div>
+
+                <div class="table-wrapper">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Target Band</th>
+                        <th>Landsat 8/9 Band</th>
+                        <th>Sentinel-2 Band</th>
+                        <th>Slope (\(m\))</th>
+                        <th>Intercept (\(c\))</th>
+                        <th>Standard Error (\(SE\))</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Blue</strong></td>
+                        <td class="font-mono">B2 (482 nm)</td>
+                        <td class="font-mono">B2 (490 nm)</td>
+                        <td class="font-mono">0.8474</td>
+                        <td class="font-mono">+0.0003</td>
+                        <td class="font-mono">0.0053</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Green</strong></td>
+                        <td class="font-mono">B3 (561 nm)</td>
+                        <td class="font-mono">B3 (560 nm)</td>
+                        <td class="font-mono">0.8848</td>
+                        <td class="font-mono">+0.0044</td>
+                        <td class="font-mono">0.0049</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Red</strong></td>
+                        <td class="font-mono">B4 (655 nm)</td>
+                        <td class="font-mono">B4 (665 nm)</td>
+                        <td class="font-mono">0.9232</td>
+                        <td class="font-mono">-0.0029</td>
+                        <td class="font-mono">0.0045</td>
+                      </tr>
+                      <tr>
+                        <td><strong>NIR</strong></td>
+                        <td class="font-mono">B5 (865 nm)</td>
+                        <td class="font-mono">B8 (842 nm)</td>
+                        <td class="font-mono">0.9033</td>
+                        <td class="font-mono">+0.0051</td>
+                        <td class="font-mono">0.0084</td>
+                      </tr>
+                      <tr>
+                        <td><strong>SWIR 1</strong></td>
+                        <td class="font-mono">B6 (1609 nm)</td>
+                        <td class="font-mono">B11 (1610 nm)</td>
+                        <td class="font-mono">0.9905</td>
+                        <td class="font-mono">+0.0001</td>
+                        <td class="font-mono">0.0055</td>
+                      </tr>
+                      <tr>
+                        <td><strong>SWIR 2</strong></td>
+                        <td class="font-mono">B7 (2201 nm)</td>
+                        <td class="font-mono">B12 (2190 nm)</td>
+                        <td class="font-mono">0.9602</td>
+                        <td class="font-mono">-0.0044</td>
+                        <td class="font-mono">0.0061</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="callout callout-note">
+                  <div class="callout-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                  </div>
+                  <div class="callout-text">
+                    <strong>Resampling Best Practice:</strong> When co-registering Landsat 30m with Sentinel-2 10m/20m data cubes, use <strong>bilinear interpolation</strong> or <strong>cubic convolution</strong>. Never use nearest-neighbor resampling for radiometric index inputs, as nearest-neighbor creates 3x3 pixel blockiness and artificial spatial discontinuities at high spatial frequencies.
+                  </div>
+                </div>
+
+                <h3>End-to-End Python Harmonization Pipeline</h3>
+                <p>
+                  Here is a clean, vectorized implementation using <code class="font-mono">numpy</code> and <code class="font-mono">rasterio</code> that transforms Landsat 8/9 bands into Sentinel-2 equivalent reflectance and exports harmonized multi-index layers:
+                </p>
+
+                <div class="code-block-wrapper" style="border-radius: var(--radius-md); overflow: hidden; margin: 1.5rem 0;">
+                  <div class="code-block-bar">
+                    <span>harmonize_landsat_to_s2.py</span>
+                    <button class="copy-btn" data-copy-target="harmonizationCode">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy Python Script
+                    </button>
+                  </div>
+                  <pre class="code-pre" id="harmonizationCode"><code>"""
+Cross-Sensor Radiometric Harmonization: Landsat 8/9 OLI -> Sentinel-2 MSI
+Method: Roy et al. (2016) HLS Coefficients
+Author: Ahmad Asad (PhD Scholar · Remote Sensing & GeoAI)
+"""
+
+import numpy as np
+import rasterio
+from rasterio.enums import Resampling
+
+# Roy et al. (2016) Ordinary Least Squares (OLS) Slopes and Intercepts
+# Formula: S2_equivalent = slope * L8_reflectance + intercept
+HLS_COEFFICIENTS = {
+    'blue':  {'slope': 0.8474, 'intercept': 0.0003},
+    'green': {'slope': 0.8848, 'intercept': 0.0044},
+    'red':   {'slope': 0.9232, 'intercept': -0.0029},
+    'nir':   {'slope': 0.9033, 'intercept': 0.0051},
+    'swir1': {'slope': 0.9905, 'intercept': 0.0001},
+    'swir2': {'slope': 0.9602, 'intercept': -0.0044}
+}
+
+def calibrate_landsat_band(l8_band_array: np.ndarray, band_name: str) -> np.ndarray:
+    """Applies radiometric harmonization transformation to a single Landsat band."""
+    params = HLS_COEFFICIENTS[band_name]
+    # Mask invalid/negative nodata pixels
+    valid_mask = (l8_band_array &gt; 0) &amp; np.isfinite(l8_band_array)
+    
+    calibrated = np.zeros_like(l8_band_array, dtype=np.float32)
+    calibrated[valid_mask] = (params['slope'] * l8_band_array[valid_mask]) + params['intercept']
+    calibrated[~valid_mask] = np.nan
+    return calibrated
+
+def run_cross_sensor_harmonization(l8_surface_reflectance_path: str, output_sui_path: str):
+    """
+    Reads Landsat 8/9 Surface Reflectance (scale factor 0.0000275 - 0.2),
+    converts to S2-calibrated surface reflectance, and derives SUI.
+    """
+    with rasterio.open(l8_surface_reflectance_path) as src:
+        meta = src.meta.copy()
+        
+        # In Landsat 8/9 Level-2: Band 3 = Green, Band 6 = SWIR1
+        green_raw = src.read(3).astype(np.float32)
+        swir1_raw = src.read(6).astype(np.float32)
+        
+        # Apply USGS Landsat Level-2 scaling factor to get surface reflectance (0-1)
+        scale_factor = 0.0000275
+        offset = -0.2
+        green_sr = np.clip(green_raw * scale_factor + offset, 0.0, 1.0)
+        swir1_sr = np.clip(swir1_raw * scale_factor + offset, 0.0, 1.0)
+        
+        # Harmonize to Sentinel-2 MSI radiometric standard
+        green_s2 = calibrate_landsat_band(green_sr, 'green')
+        swir1_s2 = calibrate_landsat_band(swir1_sr, 'swir1')
+        
+        # Compute Sealed Urban Index (SUI = Green - SWIR1) [Asad et al., IJRS 2026]
+        sui_harmonized = green_s2 - swir1_s2
+        
+        # Update metadata for single-band float32 export
+        meta.update({
+            'count': 1,
+            'dtype': 'float32',
+            'nodata': -9999.0
+        })
+        
+        sui_export = np.nan_to_num(sui_harmonized, nan=-9999.0)
+        
+        with rasterio.open(output_sui_path, 'w', **meta) as dst:
+            dst.write(sui_export.astype(np.float32), 1)
+            dst.set_band_description(1, 'Harmonized_SUI_Sentinel2_Equivalent')
+            
+    print(f"Successfully exported harmonized SUI raster to: {output_sui_path}")
+
+# Example invocation:
+# run_cross_sensor_harmonization('LC09_L2SP_188031_20250715_SR.tif', 'SUI_L9_Harmonized_S2.tif')</code></pre>
+                </div>
+              </div>
+            </article>
+
+            <!-- ================================================================
+                 TUTORIAL 3: Pure Pixel Sampling in QGIS
+                 ================================================================ -->
+            <article class="tutorial-card" id="qgis-pure-pixel">
+              <div class="tutorial-header">
+                <div class="tutorial-meta-tags">
+                  <span class="code-lang-pill sql">QGIS &amp; PyQGIS</span>
+                  <span class="tag">Statistical Validation</span>
+                  <span class="tag">Pure Pixels (&ge;85%)</span>
+                  <span class="tag">Sub-Pixel Soil Sealing</span>
+                </div>
+                <h2>Pure Pixel Sampling and High-Resolution (VHR) Ground-Truth Validation Workflow in QGIS</h2>
+                <p style="color: var(--color-text-subtle); font-size: 0.875rem; margin-top: 0.25rem;">
+                  Published: 2026 · Estimated reading &amp; implementation time: 12 mins
+                </p>
+              </div>
+
+              <div class="tutorial-body">
+                <h3>The Mixed-Pixel Challenge in Validation</h3>
+                <p>
+                  A notorious vulnerability in remote sensing accuracy assessment is validating moderate-resolution satellite classifications (such as 10m Sentinel-2 or 30m Landsat) using arbitrary single-point GPS coordinates or unaligned field samples. 
+                </p>
+                <p>
+                  At a 10m spatial resolution, a single Sentinel-2 pixel encompasses 100 m² of ground area. In Mediterranean peri-urban mosaics—such as the Metropolitan Area of Bari—a 100 m² pixel frequently straddles asphalt roadways, curbstones, dry weed verges, and olive tree canopies. Labeling this mixed pixel as either purely "impervious" or purely "agricultural" injects severe label noise, distorting confusion matrices and artificially deflating classification metrics.
+                </p>
+
+                <div class="callout callout-tip">
+                  <div class="callout-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                  </div>
+                  <div class="callout-text">
+                    <strong>The &ge;85% Pixel Purity Protocol:</strong> In empirical soil sealing and land-use mapping (as utilized in Asad et al., IJRS 2026 and Springer LNCS 2025), a validation cell is classified as a "Pure Reference Sample" only if <strong>at least 85% of its 10m &times; 10m surface area consists of a single homogeneous land cover type</strong> when inspected against sub-meter (0.2m–0.5m) Very High Resolution (VHR) aerial orthophotography.
+                  </div>
+                </div>
+
+                <h3>Step-by-Step Validation Workflow</h3>
+
+                <h4>Step 1: Align Vector Fishnet to the Exact Satellite Raster Grid</h4>
+                <p>
+                  Never generate random points without spatial reference to pixel boundaries. Instead, extract the exact extent, cell dimensions (e.g. 10.0m &times; 10.0m), and Coordinate Reference System (e.g. EPSG:32633 UTM Zone 33N) from your Sentinel-2 image. Use QGIS <em>Create Grid</em> (<code class="font-mono">qgis:creategrid</code>) to build a polygon fishnet perfectly snapped to raster pixel boundaries.
+                </p>
+
+                <h4>Step 2: Stratified Random Selection</h4>
+                <p>
+                  To prevent over-sampling dominant background classes (such as open agricultural fields), stratify your selection across preliminary spectral index classes (e.g., SUI &gt; 0 vs. SUI &le; 0, or unsupervised k-means clusters). Extract a balanced quota of 300–500 candidate cells across the study region.
+                </p>
+
+                <h4>Step 3: Overlay Very High Resolution (VHR) Orthophotos</h4>
+                <p>
+                  Stream regional 20cm WMS/WMTS aerial orthophotos (e.g., Regione Puglia SIT or National Geoportal) or high-resolution satellite basemaps (Google Satellite / Bing Aerial via XYZ Tiles). Zoom to 1:500 scale for each candidate polygon cell.
+                </p>
+
+                <h4>Step 4: Purity Assessment &amp; Fractional Tagging</h4>
+                <p>
+                  Inspect the 10m &times; 10m bounding square:
+                </p>
+                <ul>
+                  <li><strong>Pure Impervious (Class 1):</strong> &ge;85% covered by asphalt, concrete, building roofs, or industrial pavement.</li>
+                  <li><strong>Pure Permeable / Bare Soil (Class 2):</strong> &ge;85% covered by ploughed soil, dry fallow ground, or riverbed sediments without artificial barriers.</li>
+                  <li><strong>Pure Vegetation (Class 3):</strong> &ge;85% covered by dense tree canopy, vineyards, or herbaceous cover.</li>
+                  <li><strong>Mixed Pixel (Excluded from hard matrix):</strong> Surface contains 20%–80% mixed surfaces. These cells are tagged with their continuous fractional imperviousness (e.g., 45%) for sub-pixel regression validation.</li>
+                </ul>
+
+                <h3>Automating Grid Generation via PyQGIS Console</h3>
+                <p>
+                  Run this idempotent script directly inside the QGIS Python Console (<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>P</kbd>) to generate a perfectly snapped 10m validation fishnet from an active Sentinel-2 raster layer:
+                </p>
+
+                <div class="code-block-wrapper" style="border-radius: var(--radius-md); overflow: hidden; margin: 1.5rem 0;">
+                  <div class="code-block-bar">
+                    <span>qgis_pure_pixel_grid_generator.py</span>
+                    <button class="copy-btn" data-copy-target="qgisPurePixelCode">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy PyQGIS Script
+                    </button>
+                  </div>
+                  <pre class="code-pre" id="qgisPurePixelCode"><code>"""
+PyQGIS Automation: Generates a perfectly snapped 10m validation grid
+matching active Sentinel-2 raster extent and coordinates.
+Author: Ahmad Asad (PhD Scholar · Remote Sensing & GeoAI)
+"""
+
+from qgis.core import (
+    QgsProject,
+    QgsRasterLayer,
+    QgsVectorLayer,
+    QgsField,
+    QgsFeature,
+    QgsGeometry,
+    QgsPointXY,
+    QgsCoordinateReferenceSystem
+)
+from qgis.PyQt.QtCore import QVariant
+
+# 1. Retrieve the active Sentinel-2 raster layer
+layer = iface.activeLayer()
+if not isinstance(layer, QgsRasterLayer):
+    raise ValueError("Please select a Sentinel-2 raster layer in the QGIS Layers Panel.")
+
+extent = layer.extent()
+crs = layer.crs()
+res_x = layer.rasterUnitsPerPixelX() # Expecting ~10.0 meters
+res_y = layer.rasterUnitsPerPixelY()
+
+print(f"Layer CRS: {crs.authid()} | Resolution: {res_x:.2f}m x {res_y:.2f}m")
+
+# 2. Configure a subset bounding box for validation sampling (e.g. 2km x 2km window)
+# Centered on study area to avoid generating billions of cells in memory
+center_x = (extent.xMinimum() + extent.xMaximum()) / 2.0
+center_y = (extent.yMinimum() + extent.yMaximum()) / 2.0
+sample_radius = 1000.0 # 1 km buffer (2km x 2km window = 40,000 10m cells)
+
+xmin = center_x - sample_radius
+xmax = center_x + sample_radius
+ymin = center_y - sample_radius
+ymax = center_y + sample_radius
+
+# Snap coordinates to exact raster grid multiple
+xmin = extent.xMinimum() + round((xmin - extent.xMinimum()) / res_x) * res_x
+ymin = extent.yMinimum() + round((ymin - extent.yMinimum()) / res_y) * res_y
+
+# 3. Create Memory Vector Layer for Polygons
+grid_layer = QgsVectorLayer(f"Polygon?crs={crs.authid()}", "S2_10m_Pure_Pixel_Grid", "memory")
+pr = grid_layer.dataProvider()
+
+# Define schema for rigorous ground truth attribution
+pr.addAttributes([
+    QgsField("pixel_id", QVariant.Int),
+    QgsField("center_x", QVariant.Double),
+    QgsField("center_y", QVariant.Double),
+    QgsField("purity_pct", QVariant.Int),        # Estimated purity (0 - 100)
+    QgsField("ground_truth", QVariant.String),    # 'Sealed', 'Bare_Soil', 'Vegetation', 'Mixed'
+    QgsField("is_pure_85", QVariant.Int),        # 1 if >= 85%, else 0
+    QgsField("notes", QVariant.String)
+])
+grid_layer.updateFields()
+
+# 4. Generate Snapped Polygons
+features = []
+pid = 1
+curr_y = ymin
+
+while curr_y &lt; ymax:
+    curr_x = xmin
+    while curr_x &lt; xmax:
+        # Create 10m x 10m square polygon
+        ring = [
+            QgsPointXY(curr_x, curr_y),
+            QgsPointXY(curr_x + res_x, curr_y),
+            QgsPointXY(curr_x + res_x, curr_y + res_y),
+            QgsPointXY(curr_x, curr_y + res_y),
+            QgsPointXY(curr_x, curr_y)
+        ]
+        geom = QgsGeometry.fromPolygonXY([ring])
+        
+        feat = QgsFeature()
+        feat.setGeometry(geom)
+        feat.setAttributes([
+            pid,
+            curr_x + (res_x / 2.0),
+            curr_y + (res_y / 2.0),
+            None, # To be evaluated against VHR imagery
+            None,
+            0,
+            ""
+        ])
+        features.append(feat)
+        pid += 1
+        curr_x += res_x
+    curr_y += res_y
+
+pr.addFeatures(features)
+grid_layer.updateExtents()
+QgsProject.instance().addMapLayer(grid_layer)
+
+print(f"Successfully generated {len(features)} snapped 10m validation cells in layer 'S2_10m_Pure_Pixel_Grid'.")</code></pre>
+                </div>
+
+                <h3>Confusion Matrix &amp; Disagreement Analytics</h3>
+                <p>
+                  Once pure cells are verified, calculate both traditional accuracy metrics and contemporary quantity/allocation disagreement metrics (Pontius &amp; Millones, 2011):
+                </p>
+                <ul>
+                  <li><strong>Producer's Accuracy (Omission Error):</strong> Measures what fraction of true ground-truth sealed surfaces were detected by the spectral index.</li>
+                  <li><strong>User's Accuracy (Commission Error):</strong> Quantifies false positive rates—critically revealing whether dry bare agricultural soil was erroneously flagged as impervious pavement.</li>
+                  <li><strong>Quantity Disagreement:</strong> Difference between the total predicted proportion and true ground-truth proportion.</li>
+                  <li><strong>Allocation Disagreement:</strong> Difference caused by spatial misplacement of correctly proportioned categories.</li>
+                </ul>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       Global Footer
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Ahmad Asad</h3>
+          <p>
+            PhD Scholar in Sustainable Land Management at the University of Bari Aldo Moro and Politecnico di Bari. Developing robust satellite algorithms and reproducible geospatial code.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <div class="footer-links">
+            <a href="index.html">Portfolio &amp; Profile</a>
+            <a href="code.html">Code Vault</a>
+            <a href="tutorials.html">Engineering Tutorials</a>
+            <a href="reference.html">RS Band Reference</a>
+            <a href="spectral-tool.html">Spectral Index Tool</a>
+            <a href="assets/cv.pdf" download="Ahmad_Asad_CV.pdf">Download Curriculum Vitae</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Open Source &amp; Research</h4>
+          <div class="footer-links">
+            <a href="https://orcid.org/0000-0001-9926-5524" target="_blank" rel="noopener noreferrer">ORCID Profile</a>
+            <a href="https://doi.org/10.1080/01431161.2026.2715141" target="_blank" rel="noopener noreferrer">IJRS Paper (SUI)</a>
+            <a href="mailto:ahmad0asad.aa@gmail.com">Direct Email Contact</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; <span class="current-year">2026</span> Ahmad Asad. All code snippets open under MIT license.
+        </div>
+        <div>
+          <span class="footer-hosting-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="M2 17l10 5 10-5"></path>
+              <path d="M2 12l10 5 10-5"></path>
+            </svg>
+            Static Free Hosting Ready · Zero Dependencies
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toastNotification" class="toast-notification" role="status" aria-live="polite"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>

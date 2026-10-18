@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Empirical Remote Sensing Reference &amp; Band Equivalence | Ahmad Asad</title>
+  <meta name="description" content="Comprehensive remote sensing reference tables: Sentinel-2 MSI vs. Landsat 8/9 OLI band equivalence, empirical spectral index comparison (including SUI), and satellite RGB false-color composites.">
+  <meta name="keywords" content="Sentinel-2 Landsat band equivalence, SUI Sealed Urban Index, remote sensing spectral indices, NDBI bare soil confusion, RGB composite cheat sheet, satellite wavelengths">
+  <meta name="author" content="Ahmad Asad">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       Global Navigation Bar
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand" aria-label="Ahmad Asad Homepage">
+        <div class="brand-avatar-mini">AA</div>
+        <div class="brand-info">
+          <span class="brand-name">Ahmad Asad</span>
+          <span class="brand-title">PhD Scholar · Remote Sensing &amp; GeoAI</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Main Navigation">
+        <div class="nav-links">
+          <a href="index.html" class="nav-link">Portfolio</a>
+          <a href="code.html" class="nav-link">Code Vault</a>
+          <a href="tutorials.html" class="nav-link">Tutorials</a>
+          <a href="reference.html" class="nav-link active" aria-current="page">RS Reference</a>
+          <a href="spectral-tool.html" class="nav-link">
+            Spectral Index Tool <span class="nav-badge-tool">Interactive</span>
+          </a>
+        </div>
+        <div class="nav-cta">
+          <a href="assets/cv.pdf" class="btn btn-outline btn-sm" download="Ahmad_Asad_CV.pdf">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download CV
+          </a>
+        </div>
+      </nav>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======================================================================
+         Page Header & Live Table Filter
+         ====================================================================== -->
+    <section class="section" style="padding-bottom: 2rem; background: var(--color-bg); border-bottom: 1px solid var(--color-border);">
+      <div class="container">
+        <div class="section-tag blue-tag">Curated Researcher Benchmark Data</div>
+        <h1 style="margin-bottom: 0.75rem;">Empirical Remote Sensing Reference</h1>
+        <p class="section-subtitle" style="max-width: 860px;">
+          Standardized sensor band equivalence matrices, empirical mathematical formulations with bare-soil confusion risk ratings, and false-color RGB band combinations for Earth observation workflows.
+        </p>
+
+        <!-- Live Table Search Input -->
+        <div style="margin-top: 1.75rem;">
+          <div class="search-bar-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="referenceSearchInput" class="search-input" placeholder="Live filter across all tables by band name, wavelength, index acronym, or target feature..." aria-label="Filter reference tables">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         Table 1: Sentinel-2 MSI vs. Landsat 8/9 OLI Band Equivalence
+         ====================================================================== -->
+    <section class="section">
+      <div class="container">
+        <div style="margin-bottom: 1.25rem;">
+          <div class="section-tag" style="font-size: 0.75rem; margin-bottom: 0.35rem;">Table 1 · Cross-Sensor Radiometry</div>
+          <h2 style="font-size: 1.65rem;">Sentinel-2 MSI vs. Landsat 8/9 OLI Band Equivalence</h2>
+          <p style="color: var(--color-text-subtle); font-size: 0.925rem; margin-bottom: 0;">
+            Central wavelengths, full-width at half-maximum (FWHM) bandwidths, and native ground sampling distances (GSD) for cross-platform integration.
+          </p>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table" id="bandEquivalenceTable">
+            <thead>
+              <tr>
+                <th>Spectral Region</th>
+                <th>Sentinel-2 Band</th>
+                <th>S2 Wavelength &amp; Bandwidth</th>
+                <th>S2 GSD</th>
+                <th>Landsat 8/9 Band</th>
+                <th>L8/9 Wavelength &amp; Bandwidth</th>
+                <th>L8/9 GSD</th>
+                <th>Primary Application &amp; Diagnostic Sensitivity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Coastal Aerosol</strong></td>
+                <td class="font-mono">Band 1</td>
+                <td class="font-mono">443 nm (20 nm)</td>
+                <td><span class="badge-res">60 m</span></td>
+                <td class="font-mono">Band 1 (Coastal)</td>
+                <td class="font-mono">443 nm (16 nm)</td>
+                <td><span class="badge-res res-30">30 m</span></td>
+                <td>Atmospheric correction, coastal ocean color, bathymetry, aerosol retrieval.</td>
+              </tr>
+              <tr>
+                <td><strong>Blue</strong></td>
+                <td class="font-mono">Band 2</td>
+                <td class="font-mono">490 nm (65 nm)</td>
+                <td><span class="badge-res res-10">10 m</span></td>
+                <td class="font-mono">Band 2</td>
+                <td class="font-mono">482 nm (60 nm)</td>
+                <td><span class="badge-res res-30">30 m</span></td>
+                <td>True color imaging, smoke plume tracking, bathymetric mapping, chlorophyll absorption.</td>
+              </tr>
+              <tr>
+                <td><strong>Green</strong></td>
+                <td class="font-mono">Band 3</td>
+                <td class="font-mono">560 nm (35 nm)</td>
+                <td><span class="badge-res res-10">10 m</span></td>
+                <td class="font-mono">Band 3</td>
+                <td class="font-mono">561 nm (57 nm)</td>
+                <td><span class="badge-res res-30">30 m</span></td>
+                <td>Vegetation peak reflectance, water body delineations, SUI impervious baseline.</td>
+              </tr>
+              <tr>
+                <td><strong>Red</strong></td>
+                <td class="font-mono">Band 4</td>
+                <td class="font-mono">665 nm (30 nm)</td>
+                <td><span class="badge-res res-10">10 m</span></td>
+                <td class="font-mono">Band 4</td>
+                <td class="font-mono">655 nm (37 nm)</td>
+                <td><span class="badge-res res-30">30 m</span></td>
+                <td>Maximum chlorophyll absorption, bare soil brightness, NDVI denominator.</td>
+              </tr>
+              <tr>
+                <td><strong>Vegetation Red Edge 1</strong></td>
+                <td class="font-mono">Band 5</td>
+                <td class="font-mono">705 nm (15 nm)</td>
+                <td><span class="badge-res res-20">20 m</span></td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">None</td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">—</td>
+                <td><span class="badge-res">—</span></td>
+                <td>Early vegetation stress detection, chlorophyll-a red edge inflection point.</td>
+              </tr>
+              <tr>
+                <td><strong>Vegetation Red Edge 2</strong></td>
+                <td class="font-mono">Band 6</td>
+                <td class="font-mono">740 nm (15 nm)</td>
+                <td><span class="badge-res res-20">20 m</span></td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">None</td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">—</td>
+                <td><span class="badge-res">—</span></td>
+                <td>Canopy nitrogen estimation, Leaf Area Index (LAI) saturation bypass.</td>
+              </tr>
+              <tr>
+                <td><strong>Vegetation Red Edge 3</strong></td>
+                <td class="font-mono">Band 7</td>
+                <td class="font-mono">783 nm (20 nm)</td>
+                <td><span class="badge-res res-20">20 m</span></td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">None</td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">—</td>
+                <td><span class="badge-res">—</span></td>
+                <td>Transition from red edge to NIR plateau; structural canopy assessment.</td>
+              </tr>
+              <tr>
+                <td><strong>NIR Broad</strong></td>
+                <td class="font-mono">Band 8</td>
+                <td class="font-mono">842 nm (115 nm)</td>
+                <td><span class="badge-res res-10">10 m</span></td>
+                <td class="font-mono">Band 5 (NIR)</td>
+                <td class="font-mono">865 nm (28 nm)</td>
+                <td><span class="badge-res res-30">30 m</span></td>
+                <td>Cellular structure scatter, biomass volume, high-contrast water boundary detection.</td>
+              </tr>
+              <tr>
+                <td><strong>NIR Narrow (Red Edge 4)</strong></td>
+                <td class="font-mono">Band 8A</td>
+                <td class="font-mono">865 nm (20 nm)</td>
+                <td><span class="badge-res res-20">20 m</span></td>
+                <td class="font-mono">Band 5 (NIR)</td>
+                <td class="font-mono">865 nm (28 nm)</td>
+                <td><span class="badge-res res-30">30 m</span></td>
+                <td>Optimal spectral match with Landsat OLI Band 5; avoids atmospheric water absorption.</td>
+              </tr>
+              <tr>
+                <td><strong>Water Vapour</strong></td>
+                <td class="font-mono">Band 9</td>
+                <td class="font-mono">945 nm (20 nm)</td>
+                <td><span class="badge-res">60 m</span></td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">None</td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">—</td>
+                <td><span class="badge-res">—</span></td>
+                <td>Atmospheric water vapour estimation for Level-2A surface reflectance correction.</td>
+              </tr>
+              <tr>
+                <td><strong>SWIR - Cirrus</strong></td>
+                <td class="font-mono">Band 10</td>
+                <td class="font-mono">1375 nm (30 nm)</td>
+                <td><span class="badge-res">60 m</span></td>
+                <td class="font-mono">Band 9 (Cirrus)</td>
+                <td class="font-mono">1373 nm (20 nm)</td>
+                <td><span class="badge-res res-30">30 m</span></td>
+                <td>High-altitude thin cirrus cloud detection; total absorption by tropospheric moisture.</td>
+              </tr>
+              <tr>
+                <td><strong>SWIR 1</strong></td>
+                <td class="font-mono">Band 11</td>
+                <td class="font-mono">1610 nm (90 nm)</td>
+                <td><span class="badge-res res-20">20 m</span></td>
+                <td class="font-mono">Band 6</td>
+                <td class="font-mono">1609 nm (85 nm)</td>
+                <td><span class="badge-res res-30">30 m</span></td>
+                <td>Vegetation moisture stress, soil sealing differentiation, snow vs. cloud separation.</td>
+              </tr>
+              <tr>
+                <td><strong>SWIR 2</strong></td>
+                <td class="font-mono">Band 12</td>
+                <td class="font-mono">2190 nm (180 nm)</td>
+                <td><span class="badge-res res-20">20 m</span></td>
+                <td class="font-mono">Band 7</td>
+                <td class="font-mono">2201 nm (187 nm)</td>
+                <td><span class="badge-res res-30">30 m</span></td>
+                <td>Mineral exploration (clays, carbonates), active wildfire burn scars, dry biomass.</td>
+              </tr>
+              <tr>
+                <td><strong>Panchromatic</strong></td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">None</td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">—</td>
+                <td><span class="badge-res">—</span></td>
+                <td class="font-mono">Band 8 (Pan)</td>
+                <td class="font-mono">590 nm (172 nm)</td>
+                <td><span class="badge-res res-20">15 m</span></td>
+                <td>Pan-sharpening multispectral bands 1–7 to 15m spatial resolution.</td>
+              </tr>
+              <tr>
+                <td><strong>Thermal Infrared 1 (TIRS-1)</strong></td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">None</td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">—</td>
+                <td><span class="badge-res">—</span></td>
+                <td class="font-mono">Band 10 (TIRS)</td>
+                <td class="font-mono">10,895 nm (590 nm)</td>
+                <td><span class="badge-res res-30">100 m*</span></td>
+                <td>Land Surface Temperature (LST), Urban Heat Island (UHI), evapo-transpiration (*resampled to 30m).</td>
+              </tr>
+              <tr>
+                <td><strong>Thermal Infrared 2 (TIRS-2)</strong></td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">None</td>
+                <td class="font-mono" style="color: var(--color-text-subtle);">—</td>
+                <td><span class="badge-res">—</span></td>
+                <td class="font-mono">Band 11 (TIRS)</td>
+                <td class="font-mono">12,005 nm (1010 nm)</td>
+                <td><span class="badge-res res-30">100 m*</span></td>
+                <td>Split-window LST calibration, atmospheric water vapour absorption (*resampled to 30m).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         Table 2: Empirical Spectral Index Comparison
+         ====================================================================== -->
+    <section class="section" style="background-color: var(--color-bg-alt); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+      <div class="container">
+        <div style="margin-bottom: 1.25rem;">
+          <div class="section-tag" style="font-size: 0.75rem; margin-bottom: 0.35rem;">Table 2 · Empirical Spectral Formulations</div>
+          <h2 style="font-size: 1.65rem;">Empirical Spectral Index Comparison &amp; Confusion Risk</h2>
+          <p style="color: var(--color-text-subtle); font-size: 0.925rem; margin-bottom: 0;">
+            Comparative analysis of classic vs. modern remote sensing indices with specific emphasis on <strong>impervious-bare soil discrimination</strong> in peri-urban environments.
+          </p>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table" id="indexComparisonTable">
+            <thead>
+              <tr>
+                <th>Index Acronym &amp; Name</th>
+                <th>Mathematical Formulation</th>
+                <th>Target Feature</th>
+                <th>Bare Soil Confusion Risk</th>
+                <th>Sensor Support</th>
+                <th>Seminal Reference &amp; DOI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- SUI Featured Row -->
+              <tr style="background-color: #f0fdf4; border-left: 4px solid var(--color-accent);">
+                <td>
+                  <strong style="color: var(--color-accent-hover); font-size: 0.95rem;">SUI</strong><br>
+                  <span style="font-size: 0.8125rem; font-weight: 600; color: var(--color-primary);">Sealed Urban Index</span><br>
+                  <span class="badge-featured" style="margin-top: 0.2rem;">★ Novel Index</span>
+                </td>
+                <td class="font-mono" style="font-weight: 700; color: var(--color-accent-hover);">
+                  Green - SWIR1
+                </td>
+                <td>Impervious soil sealing, artificial built-up pavement, urban asphalt</td>
+                <td>
+                  <span class="badge-risk-low">Very Low Risk</span><br>
+                  <span style="font-size: 0.75rem; color: var(--color-text-subtle);">Differentiates high SWIR bare soils from concrete via Green-SWIR differential.</span>
+                </td>
+                <td>Sentinel-2 (B3 - B11)<br>Landsat 8/9 (B3 - B6)<br>Landsat 5/7 (B2 - B5)</td>
+                <td>
+                  <strong>Asad, Capolupo &amp; Tarantino (2026)</strong><br>
+                  <em>Int. J. Remote Sens.</em><br>
+                  <a href="https://doi.org/10.1080/01431161.2026.2715141" target="_blank" rel="noopener noreferrer" style="font-size: 0.75rem; color: var(--color-blue);">10.1080/01431161.2026.2715141</a>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>NDBI</strong><br>
+                  <span style="font-size: 0.8125rem; color: var(--color-text-subtle);">Normalized Difference Built-up Index</span>
+                </td>
+                <td class="font-mono">
+                  (SWIR1 - NIR) / (SWIR1 + NIR)
+                </td>
+                <td>Built-up land, artificial structures</td>
+                <td>
+                  <span class="badge-risk-high">High Confusion Risk</span><br>
+                  <span style="font-size: 0.75rem; color: var(--color-text-subtle);">Dry fallow soil exhibits positive SWIR1 - NIR slope identical to urban surfaces.</span>
+                </td>
+                <td>Sentinel-2 (B11, B8)<br>Landsat 8/9 (B6, B5)<br>Landsat 5/7 (B5, B4)</td>
+                <td>
+                  Zha et al. (2003)<br>
+                  <em>Int. J. Remote Sens.</em>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>UI</strong><br>
+                  <span style="font-size: 0.8125rem; color: var(--color-text-subtle);">Urban Index</span>
+                </td>
+                <td class="font-mono">
+                  (SWIR2 - NIR) / (SWIR2 + NIR)
+                </td>
+                <td>Urban areas, commercial roofing</td>
+                <td>
+                  <span class="badge-risk-high">High Confusion Risk</span><br>
+                  <span style="font-size: 0.75rem; color: var(--color-text-subtle);">Extreme false positives across ploughed clay and mineral soils in arid climates.</span>
+                </td>
+                <td>Sentinel-2 (B12, B8)<br>Landsat 8/9 (B7, B5)<br>Landsat 5/7 (B7, B4)</td>
+                <td>
+                  Kawamura et al. (1996)<br>
+                  <em>J. Remote Sens. Soc. Japan</em>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>EBBI</strong><br>
+                  <span style="font-size: 0.8125rem; color: var(--color-text-subtle);">Enhanced Built-Up and Bareness Index</span>
+                </td>
+                <td class="font-mono">
+                  (SWIR1 - NIR) / (10 &times; &radic;(SWIR1 + TIR))
+                </td>
+                <td>Built-up vs. bare agricultural land</td>
+                <td>
+                  <span class="badge-risk-med">Moderate Risk</span><br>
+                  <span style="font-size: 0.75rem; color: var(--color-text-subtle);">Requires thermal band; not natively computable on Sentinel-2 MSI.</span>
+                </td>
+                <td>Landsat 8/9 (B6, B5, B10)<br>Landsat 5/7 (B5, B4, B6)<br><span style="color: #dc2626;">Incompatible: S2 (No TIR)</span></td>
+                <td>
+                  As-syakur et al. (2012)<br>
+                  <em>Remote Sens.</em>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>NDVI</strong><br>
+                  <span style="font-size: 0.8125rem; color: var(--color-text-subtle);">Normalized Difference Vegetation Index</span>
+                </td>
+                <td class="font-mono">
+                  (NIR - Red) / (NIR + Red)
+                </td>
+                <td>Canopy greenness, active photosynthetic biomass</td>
+                <td>
+                  <span class="badge-risk-low">Low Risk for Veg</span><br>
+                  <span style="font-size: 0.75rem; color: var(--color-text-subtle);">Negative or near zero (0.05–0.15) on both bare soil and impervious surfaces.</span>
+                </td>
+                <td>Universal optical support<br>(Sentinel-2 B8, B4; Landsat B5, B4)</td>
+                <td>
+                  Rouse et al. (1974)<br>
+                  <em>NASA SP-351</em>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>SAVI</strong><br>
+                  <span style="font-size: 0.8125rem; color: var(--color-text-subtle);">Soil-Adjusted Vegetation Index</span>
+                </td>
+                <td class="font-mono">
+                  ((NIR - Red) / (NIR + Red + L)) &times; (1 + L)
+                </td>
+                <td>Vegetation canopy in arid/sparse terrain (L = 0.5)</td>
+                <td>
+                  <span class="badge-risk-low">Low Risk</span><br>
+                  <span style="font-size: 0.75rem; color: var(--color-text-subtle);">Explicitly dampens first-order soil background brightness variations.</span>
+                </td>
+                <td>Sentinel-2 (B8, B4)<br>Landsat 8/9 (B5, B4)<br>Landsat 5/7 (B4, B3)</td>
+                <td>
+                  Huete (1988)<br>
+                  <em>Remote Sens. Environ.</em>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>MNDWI</strong><br>
+                  <span style="font-size: 0.8125rem; color: var(--color-text-subtle);">Modified Normalized Difference Water Index</span>
+                </td>
+                <td class="font-mono">
+                  (Green - SWIR1) / (Green + SWIR1)
+                </td>
+                <td>Open surface water bodies, coastal wetlands</td>
+                <td>
+                  <span class="badge-risk-med">Moderate for Urban</span><br>
+                  <span style="font-size: 0.75rem; color: var(--color-text-subtle);">Effectively suppresses built-up noise compared to original NDWI, but high urban can yield low positive values.</span>
+                </td>
+                <td>Sentinel-2 (B3, B11)<br>Landsat 8/9 (B3, B6)<br>Landsat 5/7 (B2, B5)</td>
+                <td>
+                  Xu (2006)<br>
+                  <em>Int. J. Remote Sens.</em>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>BSI</strong><br>
+                  <span style="font-size: 0.8125rem; color: var(--color-text-subtle);">Bare Soil Index</span>
+                </td>
+                <td class="font-mono">
+                  ((SWIR1 + Red) - (NIR + Blue)) / ((SWIR1 + Red) + (NIR + Blue))
+                </td>
+                <td>Exposed topsoil, fallow agricultural lands, active tillage</td>
+                <td>
+                  <span class="badge-risk-med">Moderate Risk</span><br>
+                  <span style="font-size: 0.75rem; color: var(--color-text-subtle);">Delineates exposed substrate; some dark industrial gravel can cross over into soil range.</span>
+                </td>
+                <td>Sentinel-2 (B11, B4, B8, B2)<br>Landsat 8/9 (B6, B4, B5, B2)<br>Landsat 5/7 (B5, B3, B4, B1)</td>
+                <td>
+                  Rikimaru et al. (2002)<br>
+                  <em>Int. Arch. Photogramm.</em>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         Table 3: Satellite RGB False-Color Composite Cheat Sheet
+         ====================================================================== -->
+    <section class="section">
+      <div class="container">
+        <div style="margin-bottom: 1.25rem;">
+          <div class="section-tag" style="font-size: 0.75rem; margin-bottom: 0.35rem;">Table 3 · Visual Interpretation</div>
+          <h2 style="font-size: 1.65rem;">Satellite RGB Composite Cheat Sheet</h2>
+          <p style="color: var(--color-text-subtle); font-size: 0.925rem; margin-bottom: 0;">
+            Standard three-band red-green-blue (RGB) rendering combinations across major optical satellite families for visual inspection and feature confirmation.
+          </p>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table" id="rgbCompositeTable">
+            <thead>
+              <tr>
+                <th>Composite Name</th>
+                <th>Sentinel-2 (R - G - B)</th>
+                <th>Landsat 8/9 (R - G - B)</th>
+                <th>Landsat 5/7 (R - G - B)</th>
+                <th>Visual Appearance &amp; Key Analytical Clues</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>True Color (Natural)</strong></td>
+                <td class="font-mono">B4 - B3 - B2</td>
+                <td class="font-mono">B4 - B3 - B2</td>
+                <td class="font-mono">B3 - B2 - B1</td>
+                <td>
+                  Mimics human vision. Healthy vegetation appears vibrant green; urban centers are grey, white, or slate; water is dark navy or black; bare soils appear beige to terracotta brown.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Color Infrared (CIR / Vegetation)</strong></td>
+                <td class="font-mono">B8 - B4 - B3</td>
+                <td class="font-mono">B5 - B4 - B3</td>
+                <td class="font-mono">B4 - B3 - B2</td>
+                <td>
+                  Classic false-color CIR. Healthy photosynthesizing vegetation reflects intensely in NIR and renders as <strong>bright crimson red</strong>; urban impervious structures appear cyan or light blue; turbid water is pale blue, deep water is dark navy.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>SWIR Urban &amp; Built-up</strong></td>
+                <td class="font-mono">B12 - B8A - B4</td>
+                <td class="font-mono">B7 - B5 - B4</td>
+                <td class="font-mono">B7 - B4 - B3</td>
+                <td>
+                  Built-up urban areas and sealed infrastructure appear <strong>magenta, purple, or lavender</strong>. Dense canopy appears brilliant lime green. Agricultural fallow soils appear yellow-orange, providing immediate visual separation from impervious surfaces.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Agriculture &amp; Crop Vigour</strong></td>
+                <td class="font-mono">B8A - B11 - B2</td>
+                <td class="font-mono">B6 - B5 - B2</td>
+                <td class="font-mono">B5 - B4 - B1</td>
+                <td>
+                  Highlights crop health and field moisture. Vigorously growing crops appear bright green; harvested or fallow fields appear magenta or pink; bare soil appears brown; urban areas appear dull cyan-grey.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Geology &amp; Soil Moisture</strong></td>
+                <td class="font-mono">B12 - B11 - B2</td>
+                <td class="font-mono">B7 - B6 - B2</td>
+                <td class="font-mono">B7 - B5 - B1</td>
+                <td>
+                  Utilizes dual SWIR channels to differentiate carbonate and clay minerals. Moist saturated soils appear dark; dry barren sands and rocky outcrops appear bright orange/yellow; vegetation is muted blue.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Atmospheric Penetration</strong></td>
+                <td class="font-mono">B12 - B11 - B8A</td>
+                <td class="font-mono">B7 - B6 - B5</td>
+                <td class="font-mono">B7 - B5 - B4</td>
+                <td>
+                  Pierces light haze and smoke plumes. Excellent for tracking active forest fire hot spots and burn scar perimeter delineation (burn scars appear dark burgundy/red; active flames glow bright orange).
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Bathymetric / Water Quality</strong></td>
+                <td class="font-mono">B4 - B3 - B1</td>
+                <td class="font-mono">B4 - B3 - B1</td>
+                <td class="font-mono">B3 - B2 - B1</td>
+                <td>
+                  Enhances underwater depth gradations, suspended sediment plumes, and coastal reef topography using deep blue/coastal aerosol penetrating channels.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       Global Footer
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Ahmad Asad</h3>
+          <p>
+            PhD Scholar in Sustainable Land Management at the University of Bari Aldo Moro and Politecnico di Bari. Developing robust satellite algorithms and reproducible geospatial code.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <div class="footer-links">
+            <a href="index.html">Portfolio &amp; Profile</a>
+            <a href="code.html">Code Vault</a>
+            <a href="tutorials.html">Engineering Tutorials</a>
+            <a href="reference.html">RS Band Reference</a>
+            <a href="spectral-tool.html">Spectral Index Tool</a>
+            <a href="assets/cv.pdf" download="Ahmad_Asad_CV.pdf">Download Curriculum Vitae</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Open Source &amp; Research</h4>
+          <div class="footer-links">
+            <a href="https://orcid.org/0000-0001-9926-5524" target="_blank" rel="noopener noreferrer">ORCID Profile</a>
+            <a href="https://doi.org/10.1080/01431161.2026.2715141" target="_blank" rel="noopener noreferrer">IJRS Paper (SUI)</a>
+            <a href="mailto:ahmad0asad.aa@gmail.com">Direct Email Contact</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; <span class="current-year">2026</span> Ahmad Asad. All code snippets open under MIT license.
+        </div>
+        <div>
+          <span class="footer-hosting-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="M2 17l10 5 10-5"></path>
+              <path d="M2 12l10 5 10-5"></path>
+            </svg>
+            Static Free Hosting Ready · Zero Dependencies
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toastNotification" class="toast-notification" role="status" aria-live="polite"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>

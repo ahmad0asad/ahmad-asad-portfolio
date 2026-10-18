@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Spectral Index &amp; Band Calculator | Ahmad Asad</title>
+  <meta name="description" content="Client-side interactive satellite spectral index and band calculator. Generates instant formulas and copyable code for Google Earth Engine, QGIS, and Python for Sentinel-2, Landsat 8/9, and Landsat 5/7.">
+  <meta name="keywords" content="Spectral index calculator, SUI Sealed Urban Index, NDVI formula, GEE spectral indices code, QGIS raster calculator formula, Python rasterio indices, satellite bands wavelengths">
+  <meta name="author" content="Ahmad Asad">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       Global Navigation Bar
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand" aria-label="Ahmad Asad Homepage">
+        <div class="brand-avatar-mini">AA</div>
+        <div class="brand-info">
+          <span class="brand-name">Ahmad Asad</span>
+          <span class="brand-title">PhD Scholar · Remote Sensing &amp; GeoAI</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Main Navigation">
+        <div class="nav-links">
+          <a href="index.html" class="nav-link">Portfolio</a>
+          <a href="code.html" class="nav-link">Code Vault</a>
+          <a href="tutorials.html" class="nav-link">Tutorials</a>
+          <a href="reference.html" class="nav-link">RS Reference</a>
+          <a href="spectral-tool.html" class="nav-link active" aria-current="page">
+            Spectral Index Tool <span class="nav-badge-tool">Interactive</span>
+          </a>
+        </div>
+        <div class="nav-cta">
+          <a href="assets/cv.pdf" class="btn btn-outline btn-sm" download="Ahmad_Asad_CV.pdf">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download CV
+          </a>
+        </div>
+      </nav>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======================================================================
+         Page Header
+         ====================================================================== -->
+    <section class="section" style="padding-bottom: 2rem; background: var(--color-bg); border-bottom: 1px solid var(--color-border);">
+      <div class="container">
+        <div class="section-tag" style="background: var(--color-accent-subtle); color: var(--color-accent); border-color: var(--color-accent-border);">
+          Zero-Dependency Client-Side Utility
+        </div>
+        <h1 style="margin-bottom: 0.75rem;">Interactive Spectral Index &amp; Band Calculator</h1>
+        <p class="section-subtitle" style="max-width: 860px;">
+          Select a satellite sensor and target biophysical or urban index. Inspect channel wavelengths, resolution caveats, and instantly generate production-ready code snippets for <strong>Google Earth Engine</strong>, <strong>QGIS Raster Calculator</strong>, and <strong>Python (Rasterio/NumPy)</strong>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         Interactive Tool Workspace
+         ====================================================================== -->
+    <section class="section">
+      <div class="container">
+        
+        <!-- Controls Panel: Sensor, Category, Search -->
+        <div class="tool-controls-panel">
+          
+          <!-- 1. Sensor Selector -->
+          <div style="margin-bottom: 1.25rem;">
+            <div class="control-group-title">1. Select Target Satellite Sensor</div>
+            <div class="pill-group" role="radiogroup" aria-label="Target Satellite Sensor">
+              <button class="pill-btn sensor-btn active sensor-pill" data-sensor="sentinel2" role="radio" aria-checked="true">
+                Copernicus Sentinel-2 MSI (10m / 20m)
+              </button>
+              <button class="pill-btn sensor-btn sensor-pill" data-sensor="landsat89" role="radio" aria-checked="false">
+                Landsat 8/9 OLI / TIRS (30m)
+              </button>
+              <button class="pill-btn sensor-btn sensor-pill" data-sensor="landsat57" role="radio" aria-checked="false">
+                Landsat 5/7 TM / ETM+ (30m)
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. Category Filter -->
+          <div style="margin-bottom: 1.25rem;">
+            <div class="control-group-title">2. Filter by Biophysical Category</div>
+            <div class="pill-group" role="toolbar" aria-label="Filter Index Categories">
+              <button class="pill-btn tool-cat-btn active" data-category="all">All Indices (12)</button>
+              <button class="pill-btn tool-cat-btn" data-category="urban">Urban &amp; Soil Sealing</button>
+              <button class="pill-btn tool-cat-btn" data-category="vegetation">Vegetation &amp; Canopy</button>
+              <button class="pill-btn tool-cat-btn" data-category="water">Water &amp; Moisture</button>
+              <button class="pill-btn tool-cat-btn" data-category="burn">Burn &amp; Geology</button>
+            </div>
+          </div>
+
+          <!-- 3. Search Bar -->
+          <div>
+            <div class="control-group-title">3. Search Indices by Name, Acronym, or Formula</div>
+            <div class="search-bar-wrapper" style="margin-bottom: 0; max-width: 100%;">
+              <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="indexSearchInput" class="search-input" placeholder="Type acronym or keyword (e.g. SUI, NDVI, SAVI, built-up, SWIR, water)..." aria-label="Search spectral indices">
+            </div>
+          </div>
+        </div>
+
+        <!-- Two-Column Interactive Layout: Index List & Inspector -->
+        <div class="spectral-grid">
+          
+          <!-- Left Column: Filtered Index Cards List -->
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span class="control-group-title" style="margin-bottom: 0;">Available Spectral Indices</span>
+              <span style="font-size: 0.75rem; color: var(--color-text-subtle);">Click an index to inspect</span>
+            </div>
+            <div class="index-list-col" id="indexListContainer">
+              <!-- Dynamically populated by js/main.js via RS_DATA.indices -->
+            </div>
+          </div>
+
+          <!-- Right Column: Inspector Details & Code Generator -->
+          <div>
+            <div class="tool-inspector" id="toolInspectorContainer">
+              <!-- Dynamically populated by js/main.js renderInspector() -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       Global Footer
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Ahmad Asad</h3>
+          <p>
+            PhD Scholar in Sustainable Land Management at the University of Bari Aldo Moro and Politecnico di Bari. Developing robust satellite algorithms and reproducible geospatial code.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <div class="footer-links">
+            <a href="index.html">Portfolio &amp; Profile</a>
+            <a href="code.html">Code Vault</a>
+            <a href="tutorials.html">Engineering Tutorials</a>
+            <a href="reference.html">RS Band Reference</a>
+            <a href="spectral-tool.html">Spectral Index Tool</a>
+            <a href="assets/cv.pdf" download="Ahmad_Asad_CV.pdf">Download Curriculum Vitae</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Open Source &amp; Research</h4>
+          <div class="footer-links">
+            <a href="https://orcid.org/0000-0001-9926-5524" target="_blank" rel="noopener noreferrer">ORCID Profile</a>
+            <a href="https://doi.org/10.1080/01431161.2026.2715141" target="_blank" rel="noopener noreferrer">IJRS Paper (SUI)</a>
+            <a href="mailto:ahmad0asad.aa@gmail.com">Direct Email Contact</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; <span class="current-year">2026</span> Ahmad Asad. All code snippets open under MIT license.
+        </div>
+        <div>
+          <span class="footer-hosting-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="M2 17l10 5 10-5"></path>
+              <path d="M2 12l10 5 10-5"></path>
+            </svg>
+            Static Free Hosting Ready · Zero Dependencies
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toastNotification" class="toast-notification" role="status" aria-live="polite"></div>
+
+  <!-- Client-Side Zero-Dependency Scripts -->
+  <script src="js/indices-data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
